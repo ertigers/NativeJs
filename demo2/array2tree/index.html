@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 数组转化树形结构
+      function tranListToTreeData(list) {
+        const treeList = []; // 最终要产出的树状数据的数组
+        const map = {}; // 存储映射关系
+        //  建立一个映射关系，并给每个元素补充children属性.
+        list.forEach((item) => {
+          if (!item.children) {
+            item.children = [];
+          }
+          map[item.index] = item;
+        });
+
+        list.forEach((item) => {
+          const parent = map[item.parent_index];
+          if (parent) {
+            parent.children.push(item);
+          } else {
+            treeList.push(item);
+          }
+        });
+        return treeList;
+      }
+
+      // 本质上是存储对象的引用地址，对象与对象之间通过index和parent_index进行关联。
+      // 把parent_index不为0的去挂载其他的对象上去，最上层parent_index为0的对象就是根节点。
+
+      // 优化方案-时间复杂度为O(n)，空间复杂度O(n)
+      function tranListToTreeData2(list) {
+        const treeList = []; // 最终要产出的树状数据的数组
+        const map = {}; // 存储映射关系
+        for (const item of list) {
+
+          if(!map[item.index]) {
+            map[item.index] = { ...item, children: [] };
+          }
+
+          map[item.index] = { ...item, children: map[item.index]['children'] };
+
+          if (item.parent_index === 0) {
+            treeList.push(map[item.index]);
+          } else {
+            if(!map[item.parent_index]) {
+              map[item.parent_index] = { ...item, children: [] };
+            }
+            map[item.parent_index].children.push(map[item.index]);
+          }
+        }
+        return treeList;
+      }
+
+      // 进一步封装
+      function tranListToTreeData3(list,id,pid) {
+        const treeList = []; // 最终要产出的树状数据的数组
+        const map = {}; // 存储映射关系
+        for (const item of list) {
+
+          if(!map[item[id]]) {  // 没有存过
+            map[item[id]] = { ...item, children: [] };
+          }else {  // 存过了，并且把子值接上
+            map[item[id]] = { ...item, children: map[item[id]]['children'] };
+          }
+
+          if (item[pid] === 0) {  // 根节点
+            treeList.push(map[item[id]]);
+          } else {
+            if(!map[item[pid]]) { // 非根节点且父级没有存过
+              map[item[pid]] = { ...item, children: [] };
+            }
+            map[item[pid]].children.push(map[item[id]]);
+          }
+        }
+        return treeList;
+      }
+
+      function start() {
+        const arr = [
+          { index: 4, parent_index: 2, name: "项目" },
+          { index: 5, parent_index: 2, name: "项目" },
+          { index: 6, parent_index: 3, name: "项目" },
+          { index: 1, parent_index: 0, name: "项目集" },
+          { index: 2, parent_index: 0, name: "项目集" },
+          { index: 3, parent_index: 1, name: "项目集" },
+        ];
+        // const treeList = this.tranListToTreeData2(arr);
+        const treeList = this.tranListToTreeData2(arr,'index','parent_index');
+        console.log(treeList);
+      }
+      start();
+    </script>
+  </body>
+</html>

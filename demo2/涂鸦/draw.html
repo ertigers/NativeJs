@@ -1,0 +1,310 @@
+<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<head>
+
+	<title>画图板</title>
+	<script src='js/jquery-1.11.0.min.js'></script>
+	<script src='js/draw.js'></script>
+    <script src='js/cookie.js'></script>
+	<script src="js/edit.js"></script>
+	<script src="js/ui.js"></script>
+	
+	<link href= 'css/draw/canvas.css' type="text/css" rel="Stylesheet"/>
+	
+	<script>       
+		//撤销的array
+		var cancelList = new Array();
+		//撤销的次数
+		var cancelIndex = 0;
+
+		var inputType = 0 //输入类型 0:手写，1:键盘输入
+
+		//判断是否ie
+        var IE_HACK = (/msie/i.test(navigator.userAgent) && 
+               !/opera/i.test(navigator.userAgent));
+
+
+		$(function(){
+			initCanvas();
+			initDrag();
+			$("img")[0].click();
+			$("#color input").click(chooseColor);
+
+			drawImage();
+		});
+
+		//初始化
+		var initCanvas = function(){
+            canvas_img =  document.getElementById("canvas_img");
+			canvas_img.width = canvasWidth;
+			canvas_img.height = canvasHeight;
+			context_img = canvas_img.getContext('2d');
+			$(canvas_img).css("z-index",0);
+            
+			canvas = document.getElementById("canvas");
+			canvas.width = canvasWidth;
+			canvas.height = canvasHeight;
+			context = canvas.getContext('2d');
+			canvasTop = $(canvas).offset().top
+			canvasLeft = $(canvas).offset().left;
+			$(canvas).css("z-index",1);
+	
+			canvas_bak = document.getElementById("canvas_bak");
+			canvas_bak.width = canvasWidth;
+			canvas_bak.height = canvasHeight;
+			context_bak = canvas_bak.getContext('2d');		
+            $(canvas_bak).css("z-index",2);
+
+            dedit = document.getElementById("dedit");
+			$(dedit).width(canvasWidth);
+			$(dedit).height(canvasHeight);
+			$(dedit).css("z-index",30);
+			///初始化lEdit;
+			lEdit.setEditNode(dedit);
+			lEdit.configs = {charWidth:6, charHeight:12, drawContext: context};
+			lEdit.init();
+
+//			initExecution(canvas_img, context_img);
+			
+		}
+
+		var drawImage = function()
+		{
+			var url = getCookie("src");
+			var image1 = new Image();
+			image1.src = url;
+			image1.onload = function(){
+				context_img.drawImage(image1 , 0 ,0 , image1.width , image1.height , 0 ,0 , canvasWidth , canvasHeight);
+			}
+		}
+		
+		//下载图片
+		var downloadImage = function(obj){
+			//chooseImg(obj);
+
+			var image2 = new Image();
+			image2.src = canvas.toDataURL();
+			image2.onload = function(){
+
+				lEdit.drawCanvasText(context_img);
+				lEdit.clean();
+				context_img.drawImage(image2 , 0 ,0 , image2.width , image2.height , 0 ,0 , canvasWidth , canvasHeight);
+
+                if (IE_HACK)
+                {
+					var img = canvas_img.toDataURL("image/png");
+                    var w=window.open('about:blank');
+                    w.document.write("<img src='"+img+"' alt='from canvas'/>");
+                }
+				else
+				{
+                    $("#downloadImage_a")[0].href=canvas_img.toDataURL("image/png");
+			        //$("#downloadImage_a")[0].click();
+				}
+
+			}			
+		}
+
+		//展开颜色选择器
+		var showColor = function(obj){
+			var top = $(obj).offset().top;
+			var left = $(obj).offset().left;		
+			$("#color")[0].style.left = left + "px";;
+			$("#color")[0].style.top = top + "px";
+			$("#color").show();
+		
+		}
+		//展开线条大小选择器
+		var showLineSize = function(obj){
+			if($("#line_size").is(":hidden")){
+				var top = $(obj).offset().top;
+				var left = $(obj).offset().left;				
+				$("#line_size")[0].style.left = left + $(obj).width() + 5; +  "px";
+				$("#line_size")[0].style.top = top   + "px";
+				$("#line_size").show();
+			}else{
+				$("#line_size").hide();
+			}
+		}
+
+		//展开字号选择器
+		var showFontSize = function(obj) {
+			if($("#font_size").is(":hidden")){
+				var top = $(obj).offset().top;
+				var left = $(obj).offset().left;
+				$("#font_size")[0].style.left = left + $(obj).width() + 5; +  "px";
+				$("#font_size")[0].style.top = top   + "px";
+				$("#font_size").show();
+			}else{
+				$("#font_size").hide();
+			}
+		}
+
+		//选择颜色
+		var chooseColor = function(obj){		
+			var objClass = $(this).attr("class");
+			$("#chooseColor").attr("class" , "");
+			$("#chooseColor").addClass (objClass).addClass('border_nochoose');			
+			color  = $(this).css('background-color');
+			$("#color").hide();
+
+			lEdit.setColor(color);
+
+		}
+
+		//选择大小
+		var chooseLineSize =  function(_size){		
+			$("#chooseSize").attr("src" , "image/line_size_"+_size+".png");		
+			size = _size;
+			$("#line_size").hide();
+		}
+
+		//选择font size
+		var chooseFontSize = function(_size) {
+			$("#font_size").hide();
+			lEdit.setFontSize(_size);
+		}
+
+		//隐藏选择
+		var hide = function() {
+			$('#line_size').hide();
+			$('#font_size').hide();
+			$('#color').hide();
+		}
+
+        // 处理文件拖入事件，防止浏览器默认事件带来的重定向  
+        function handleDragOver(evt) {  
+			evt.stopPropagation();  
+			evt.preventDefault();  
+         }
+		 
+
+		// 判断是否图片  
+		function isImage(type) {  
+			switch (type) {  
+			case 'image/jpeg':  
+			case 'image/png':  
+			case 'image/gif':  
+			case 'image/bmp':  
+			case 'image/jpg':  
+				return true;  
+			default:  
+				return false;  
+			}  
+		}
+
+		function changeInputType(obj, type) {
+			if (type == 0) {
+				$("#container").css("z-index",30);
+				$("#dedit").css("z-index",20);
+			}
+			else if (type==1) {
+				$("#container").css("z-index",20);
+				$("#dedit").css("z-index",30);
+
+				chooseImg(obj);
+			}
+		}
+
+		 // 处理拖放文件列表  
+		function handleFileSelect(evt) {  
+			evt.stopPropagation();  
+			evt.preventDefault();  
+  
+			var files = evt.dataTransfer.files;  
+  
+			for (var i = 0, f; f = files[i]; i++) {    
+				var t = f.type ? f.type : 'n/a';
+				reader = new FileReader();
+				isImg = isImage(t);
+				  
+				// 处理得到的图片  
+				if (isImg) {  
+					reader.onload = (function (theFile) {  
+						return function (e) {  
+							var  image = new Image(); 
+							image.src =  e.target.result ;
+							image.onload = function(){
+								context.drawImage(image , 0 ,0 , image.width , image.height , 0 ,0 , canvasWidth , canvasHeight);
+							}
+
+						};  
+					})(f)  
+					reader.readAsDataURL(f);  
+				}   
+			}    
+		}  
+
+		//初始化拖入效果
+		var initDrag= function(){
+			var dragDiv  = document.getElementById("canvas_bak");
+			dragDiv.addEventListener('dragover', handleDragOver, false);  
+			dragDiv.addEventListener('drop', handleFileSelect, false);  
+		}
+	    
+	</script>
+
+</head>
+<body>
+
+		<div id="drawController">	
+			<img src = 'images/draw/pencil.png' width = '20px;' height = '20px;' class="img" onclick="draw_graph('pencil',this)" class = 'border_nochoose' title = '铅笔'/><br/>
+			<input id="chooseColor"  type="button"  class = 'i1 border_nochoose' onclick="showColor(this)" title = '选择颜色'/><br/>
+			<img src = 'images/draw/handwriting.png' width = '20px;' height = '20px;' class="img" onclick="draw_graph('handwriting',this)" class = 'border_nochoose' title = '涂鸦'/><br/>
+			<img src = 'images/draw/rubber.png' width = '20px;' height = '20px;' class="img" onclick="draw_graph('rubber',this)" class = 'border_nochoose' title = '橡皮擦'/><br/>
+			<img  id="chooseSize" src = 'images/draw/line_size_1.png'  width = '20px;' height = '20px;' class="img" onclick="showLineSize(this)" class = 'border_nochoose' title = '线条大小'/><br/>
+			<img src = 'images/draw/xx.png' width = '20px;' height = '20px;' class="img" onclick="clearContext('1')" class = 'border_nochoose' title = '清屏'/><br/>
+			<img src = 'images/draw/save.png' width = '20px;' height = '20px;' class="img" onclick="downloadImage(this);" class = 'border_nochoose' title = '保存'/><br/>
+			<input type="button" width = '20px;' value="T"  height = '20px;' class="img" onclick="showFontSize(this);" class = 'border_nochoose' title = '选择文字大小'/><br/>
+			<img src = 'images/draw/keyin.png' width = '20px;' height = '20px;' class="img" onclick="changeInputType(this,1);" class = 'border_nochoose' title = '输入'/><br/>
+			<a href="#" download="picture.png"  id="downloadImage_a">
+				<img src = 'images/draw/download.png' width = '20px;' height = '20px;' class="img" class = 'border_nochoose' title = '下载' />
+			</a><br/>
+		</div>
+
+		<div style="float:left;width:30%; position: absolute;" onclick="hide();" >
+		    <div id="dedit" class="box" style="background:url(bgimage.gif);z-index: 100">
+		    </div>
+			<div id="container">
+				<canvas id="canvas_bak"></canvas>
+				<canvas id="canvas">
+					浏览器不支持哦，亲
+				</canvas>
+				<canvas id="canvas_img"></canvas>
+			</div>
+		</div>
+	
+		<div id="color" class="color" >
+            <input class="i1" type="button"/>
+            <input class="i2" type="button"/>
+            <input class="i3" type="button"/>
+            <input class="i4" type="button"/>
+            <input class="i5" type="button"/>
+            <input class="i6" type="button"/>
+            <input class="i7" type="button"/>
+            <input class="i8" type="button"/>
+            <input class="i9" type="button"/>
+        </div>
+
+		<div id="line_size"  class = "border_nochoose" style="z-index:99">
+			<img src="images/draw/line_size_1.png" width = '80px;' height = '12px;' onclick="chooseLineSize(1)"><br/>
+			<img src="images/draw/line_size_3.png" width = '80px;' height = '12px;' onclick="chooseLineSize(3)"><br/>
+			<img src="images/draw/line_size_5.png" width = '80px;' height = '12px;' onclick="chooseLineSize(5)"><br/>
+			<img src="images/draw/line_size_7.png" width = '80px;' height = '12px;' onclick="chooseLineSize(7)">
+		</div>
+
+		<div id="font_size"  class = "border_nochoose" style="z-index:99">
+			<input type="button" onclick="chooseFontSize(10)" value="10px" /><br/>
+			<input type="button" onclick="chooseFontSize(11)" value="11px" /><br/>
+			<input type="button" onclick="chooseFontSize(12)" value="12px" />\<br/>
+			<input type="button" onclick="chooseFontSize(14)" value="14px" />\<br/>
+			<input type="button" onclick="chooseFontSize(16)" value="16px" />\<br/>
+			<input type="button" onclick="chooseFontSize(18)" value="18px" />\<br/>
+			<input type="button" onclick="chooseFontSize(24)" value="24px" />\<br/>
+			<input type="button" onclick="chooseFontSize(32)" value="32px" />\<br/>
+			<input type="button" onclick="chooseFontSize(48)" value="48px" />\<br/>
+		</div>
+
+</body>
+</html>

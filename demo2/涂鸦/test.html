@@ -1,0 +1,26 @@
+<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<head>
+
+	<title>画图板</title>
+	<script src='js/cookie.js'></script>
+	
+	<link href= 'css/draw/canvas.css' type="text/css" rel="Stylesheet"/>
+	
+	<script>       
+	    function imgEdit(img)
+		{
+		    setCookie("src",img.src,"d1");
+			window.location.href = "draw.html";
+			
+		}
+	</script>
+
+</head>
+<body>
+		<div id="drawController">	
+			<img src ='images/2841_518137_641093.jpg' title = 'test' onClick = "imgEdit(this);"/>
+		</div>
+</body>
+</html>

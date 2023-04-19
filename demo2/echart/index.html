@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.3.2/echarts.min.js"></script>
+  </head>
+  <body>
+    <div id="main" style="width: 600px; height: 400px"></div>
+    <script>
+      var chartDom = document.getElementById("main");
+      var myChart = echarts.init(chartDom);
+      var option;
+
+      option = {
+        xAxis: {
+          type: "category",
+          data: ["5-1", "5-2", "5-3", "5-4", "5-5", "5-6", "5-7", "5-8", "5-9", "5-10", "5-11", "5-12", "5-13",],  // X轴坐标， 从接口中数组map出来一个数组即可以
+        },
+        yAxis: {
+          type: "value",
+        },
+        series: [
+          {
+            data: [120, 200, 150, 80, 70, 110, 130,120, 200, 150, 80, 70, 110],  // 对应x轴坐标的值   ， 从接口中数组map出来一个数组即可以
+            type: "bar",
+            showBackground: true,
+            backgroundStyle: {
+              color: "rgba(180, 180, 180, 0.2)",
+            },
+          },
+        ],
+        dataZoom: [
+          {
+            type: 'inside', // 内置在坐标系中
+            startValue: 0, // 数据窗口范围的起始数值。
+            endValue: 7, // 数据窗口范围的结束数值。
+            zoomLock: true, // 是否锁定选择区域（或叫做数据窗口）的大小。
+          }
+        ]
+      };
+      option && myChart.setOption(option);
+    </script>
+  </body>
+</html>

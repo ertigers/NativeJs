@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>animation示例</title>
+  </head>
+  <body>
+    <div class="one"></div>
+    <script>
+      // 详细参考：https://juejin.cn/post/6844903541887205389
+    </script>
+  </body>
+  <style>
+    .one {
+      width: 100px;
+      height: 100px;
+      margin: 200px auto;
+      background-color: #cd4a48;
+      position: relative;
+      animation: moveHover 2s ease-in-out 0;
+    }
+
+    @keyframes moveHover {
+      0% {
+        top: 0px;
+        left: 0px;
+        background: #cd4a48;
+      }
+      50% {
+        top: 200px;
+        left: 200px;
+        background: #a48992;
+      }
+      100% {
+        top: 400px;
+        left: 400px;
+        background: #ffb89a;
+      }
+    }
+  </style>
+</html>

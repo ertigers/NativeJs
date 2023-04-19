@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>js获取div编辑框，textarea，input text的光标位置，兼容FF和IE</title>
+    <script src="jquery-1.4.4.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        //去除左右所有空格
+        String.prototype.trim = function () {
+            return this.replace(/(^\s*)|(\s*$)/g, "");
+        }
+        function getPosition(element) {
+            var OsObject = "";
+            if (navigator.userAgent.indexOf("MSIE") > 0) {
+                OsObject = "MSIE";
+            }
+            if (navigator.userAgent.indexOf("Firefox") > 0) {
+                OsObject = "Firefox";
+            }
+            if (navigator.userAgent.indexOf("Safari") > 0) {
+                OsObject = "Safari";
+            }
+            if (navigator.userAgent.indexOf("Camino") > 0) {
+                OsObject = "Camino";
+            }
+            if (navigator.userAgent.indexOf("Gecko") > 0) {
+                OsObject = "Gecko";
+            }
+            if (navigator.userAgent.indexOf("Chrome") > 0) {
+                OsObject = "Chrome";
+            }
+
+            var result = 0;
+            if (!document.selection) { //非IE浏览器
+                var thisTagName = null;
+                if ($(element).attr("tagName") != "TEXTAREA" && $(element).attr("tagName") != "INPUT") {
+                    if ($(element).attr("tagName") == "DIV" && $(element).attr("contenteditable") == "true") {
+                        thisTagName = window.getSelection().anchorNode.parentElement.tagName;
+                    } //出自http://www.cnblogs.com/ahjesus 尊重作者辛苦劳动成果，转载请注明出处，谢谢！
+                    else {
+                        thisTagName == null;
+                    }
+                }
+                else {
+                    if ($(element).attr("tagName") == "INPUT" && $(element).attr("type") == "text") {
+                        thisTagName = window.getSelection().anchorNode.tagName;
+                    }
+                    else {
+                        console.log(window.getSelection());
+                        thisTagName = window.getSelection().anchorNode.tagName;
+                    }
+                }
+                console.log(thisTagName);
+                if (thisTagName == "TEXTAREA" || thisTagName == "INPUT" || (thisTagName=="BODY"&&OsObject == "Chrome")) {
+                    result = element.selectionStart
+                } //出自http://www.cnblogs.com/ahjesus 尊重作者辛苦劳动成果，转载请注明出处，谢谢！
+                else if (thisTagName != null) {
+                    if (thisTagName == element.tagName) {
+                        if (window.getSelection().anchorNode.textContent == $(element).text()) {
+                            result = window.getSelection().anchorOffset;
+                        }
+                        else {
+                            var currentIndex = window.getSelection().anchorOffset;
+                            var txt = "";
+                            var txtoo = window.getSelection().anchorNode.previousSibling;
+                            while (txtoo != null) {
+                                txt += txtoo.textContent;
+                                txtoo = txtoo.previousSibling;
+                            } //出自http://www.cnblogs.com/ahjesus 尊重作者辛苦劳动成果，转载请注明出处，谢谢！
+                            result = txt.trim().length + currentIndex;
+                        }
+                    }
+                    else {
+                        var currentIndex = window.getSelection().anchorOffset;
+                        var txt = "";
+                        var txtoo = window.getSelection().anchorNode.parentElement.previousSibling;
+                        while (txtoo != null) {
+                            txt += txtoo.textContent;
+                            txtoo = txtoo.previousSibling;
+                        }
+                        result = txt.trim().length + currentIndex;
+                    }
+                } //出自http://www.cnblogs.com/ahjesus 尊重作者辛苦劳动成果，转载请注明出处，谢谢！
+                else {
+                    return 0;
+                }
+            } else { //IE
+                var rng;
+                if ($(element).attr("tagName") == "TEXTAREA" || ($(element).attr("tagName") == "INPUT" && $(element).attr("type") == "text") || ($(element).attr("tagName") == "DIV" && $(element).attr("contenteditable") == "true")) {
+                    element.focus();
+                    rng = document.selection.createRange();
+                    rng.moveStart('character', -element.innerText.length);
+                    var text = rng.text;
+                    for (var i = 0; i < element.innerText.length; i++) {
+                        if (element.innerText.substring(0, i + 1) == text.substring(text.length - i - 1, text.length)) {
+                            result = i + 1;
+                        }
+                    }
+                } //出自http://www.cnblogs.com/ahjesus 尊重作者辛苦劳动成果，转载请注明出处，谢谢！
+                else {
+                    return 0;
+                }
+            }
+            return result;
+        }
+
+        function getValue(element) {
+            var pos = getPosition(element);
+            document.getElementById("pnum").value = pos;
+        }
+
+    </script>
+    <style type="text/css">
+        #Div1, #Div2
+        {
+            width: 500px;
+            height: 100px;
+            border: solid 1px black;
+        }
+    </style>
+</head>
+<body>
+<input id="pnum" type="text" value="Hello,wellcome to test! 你好,欢迎测试!" onmouseup="getValue(this)"
+       style="display: block" />
+<textarea cols="60" rows="10" onkeyup="getValue(this)" onmouseup="getValue(this)">Hello,wellcome to test! 你好,欢迎测试! 注意源代码开闭合标记之间不能换行，否则统计错误！</textarea>
+<div id="Div1" onclick="getValue(this);" onkeyup="getValue(this);" contenteditable="true">一二三<span>四五</span>六七八<span>九零</span> 注意源代码开闭合标记之间不能换行，否则统计错误！注意div编辑框源码里面是嵌套有其他标签的，可以正常返回正确位置！</div>
+<br />
+<div id="Div2" onclick="getValue(this);" onkeyup="getValue(this);">一二三四五六<span>七八</span></div>
+</body>
+</html>

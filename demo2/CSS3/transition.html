@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>transition示例</title>
+</head>
+<body>
+  <div class="one">
+    transition常用于过渡可以为一个元素在不同状态之间切换的时候定义不同的过渡效果。比如在不同的伪元素之间切换，像是 :hover，:active 或者通过 JavaScript 实现的状态变化。
+  </div>
+  <div class="note">
+    <h4>transition主要包含四个属性值：</h4>
+    <p>执行变换的属性：transition-property，变换延续的时间：transition-duration，在延续时间段，变换的速率变化：transition-timing-function，变换延迟时间：transition-delay。</p>
+    <p>注意事项：</p>
+    <h5>1.不是所有的CSS属性都支持transition</h5>
+    <h5>2.transition需要明确知道，开始状态和结束状态的具体数值，才能计算出中间状态。比如，height从0px变化到100px，transition可以算出中间状态。但是，transition没法算出0px到auto的中间状态，也就是说，如果开始或结束的设置是height: auto，那么就不会产生动画效果。</h5>
+    <h5>3.transition需要事件触发，所以没法在网页加载时自动发生。</h5>
+    <h5>4.transition是一次性的，不能重复发生，除非一再触发。</h5>
+  </div>
+</body>
+<style>
+  .one {
+        width: 400px;
+        height: 100px;
+        margin: 100px auto;
+        background-color: #cd4a48;
+        -webkit-transition: width 2s ease;
+        -moz-transition: width 2s ease;
+        -ms-transition: width 2s ease;
+        -o-transition: width 2s ease;
+        transition: width 2s ease;
+    }
+
+    .one:hover {
+        width: 600px;
+        /* height: 300px; */
+    }
+
+    .note {
+      margin: 0 auto;
+      width: 600px;
+    }
+
+</style>
+</html>

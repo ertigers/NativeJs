@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>布局测试</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    .container {
+      width: 100vw;
+      height: 100vh;
+      background: #ae9191;
+    }
+    .header {
+      width: 100%;
+      height: 50px;
+      background: rgb(237, 233, 175);
+    }
+    .main {
+      width: 100%;
+      min-height: 800px;
+      height: calc(100% - 50px);
+      background: rgb(178, 221, 242);
+      display: flex;
+    }
+    .left {
+      width: 200px;
+      height: 100%;
+      background: rgb(168, 212, 151);
+      padding-bottom: 30px;
+    }
+    .left-box1 {
+      height: 30%;
+      margin-top: 30px;
+      background: rgb(168, 212, 151);
+    }
+    .left-box2 {
+      height: 40%;
+      background: rgb(107, 207, 175);
+    }
+    .left-box3 {
+      height: 30%;
+      background: rgb(78, 219, 139);
+    }
+    .left-box1-content1 {
+      /* height: 600px; */
+      background: rgb(209, 151, 212);
+    }
+    .center {
+      width: 200px;
+      height: 100%;
+      background: rgb(119, 152, 106);
+    }
+    .right {
+      width: 200px;
+      height: 100%;
+      background: rgb(47, 129, 15);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header"></div>
+    <div class="main">
+      <div class="left">
+        <div class="left-box1">
+          <div class="left-box1-content1">
+
+          </div>
+        </div>
+        <div class="left-box2"></div>
+        <div class="left-box3"></div>
+      </div>
+      <div class="center"></div>
+      <div class="right"></div>
+    </div>
+  </div>
+</body>
+</html>

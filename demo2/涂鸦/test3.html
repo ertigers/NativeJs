@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src='js/jquery-1.11.0.min.js'></script>
+</head>
+<script>
+    $(function() {
+//        var canv = document.getElementById("canvas1");
+//        var ctx = canv.getContext('2d');
+//        ctx.font = "12px Arial";
+//        ctx.fillStyle =  "#fa3212";
+//        ctx.fillText($(font_size)[0].innerHTML, 20, 20);
+
+//        var re = $("#span1").replaceWith("看了看角落里");
+//        console.log(re);
+
+        $("#font_size").on("mousedown",true, function(e) {
+            console.log("font_size mousedown");
+        }).on("mouseup", function(e) {
+            console.log("font_size mouseup");
+        }).on("click", function(e) {
+            console.log("font_size click");
+        })
+
+        $("#span1").on("mousedown",true, function(e) {
+            console.log("span1 mousedown");
+        }).on("mouseup", function(e) {
+            console.log("span1 mouseup");
+        }).on("click", function(e) {
+            console.log("span1 click");
+        })
+
+    });
+</script>
+<body>
+<div style="float:left;width:30%; background: lightcoral;">
+    <canvas id="canvas1" style="width: 200px; height:200px">
+        浏览器不支持哦，亲
+    </canvas>
+
+</div>
+
+<div id="font_size"  style="z-index:99;visibility:visible;">
+    <span id="span1">&nbsp;看看好看老厉害了看好了回来开会了&nbsp;</span>
+</div>
+</body>
+</html>

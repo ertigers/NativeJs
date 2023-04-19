@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<div>
+  <!-- 登录 -->
+  <div>
+    <input id="username" type="text" name="username" placeholder="请输入用户名">
+    <input id="password" type="password" name="password" placeholder="请输入密码">
+    <button onClick="testValidator()">登录</button>
+  </div>
+</div>
+<body>
+<script type="module" >
+  import Validator  from './validator.js';
+  window.Validator = Validator
+</script>
+<script>
+  function testValidator() {
+    console.log('点击了');
+    let username = document.getElementById('username');
+    let password = document.getElementById('password');
+
+    let validator = new Validator()
+    validator.add(username, 'isNonEmpty', '用户名不能为空');
+    validator.add(password, 'minLength:6', '密码长度不能少于6位');
+    let errMsg = validator.start();
+    if (errMsg) {
+      alert(errMsg);
+      return false;
+    }
+  }
+</script>
+</body>
+</html>

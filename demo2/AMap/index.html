@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="initial-scale=1.0, user-scalable=no, width=device-width"
+    />
+    <title>AMap JSAPI Loader</title>
+    <style>
+      html,
+      body,
+      #container {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container" tabindex="0"></div>
+    <script src="//a.amap.com/Loca/static/mock/districts.js"></script>
+    <script src="https://webapi.amap.com/loader.js"></script>
+    <script>
+      AMapLoader.load({
+        //首次调用 load
+        key: "6c017ab90843a22b71e6c870144f915b", //首次load key为必填
+        version: "1.4.15",
+        AMapUI: {
+          version: "1.1",
+          plugins: ["overlay/SimpleMarker"],
+        },
+      }).then((AMap) => {
+
+
+        map = new AMap.Map("container", {
+          zoom: 4,
+          zoom: 12, //初始化地图层级
+          center: [117.17, 31.86	] //初始化地图中心点
+        });
+
+        const markList = [];
+
+        // const polygon = new AMap.Polygon({
+        //   map,
+        //   strokeColor: 'white',
+        //   strokeWeight: 2,
+        //   strokeOpacity: 0.5,
+        //   fillColor: 'blue',
+        //   fillOpacity: 0.2,
+        //   bubble: true,
+        // });
+        // map.setFitView([polygon]);
+
+        map.on('click', (event) => {
+          if (markList.length) {
+            this.map.remove(markList[0]);
+            markList.splice(0, 1);
+          }
+          markList.push(new AMap.Marker({
+            map: this.map,
+            position: event.lnglat,
+            offset: new AMap.Pixel(-10, -30)
+          }));
+          this.form.longitude = event.lnglat.getLng();
+          this.form.latitude = event.lnglat.getLat();
+
+          this.$nextTick(() => {
+            this.$refs.form.validateField('longitude');
+            this.$refs.form.validateField('latitude');
+          });
+        });
+
+      });
+
+      /**
+     * 返回一批网格排列的经纬度
+     * @param  {AMap.LngLat} center 网格中心
+     * @param  {number} colNum 列数
+     * @param  {number} size  总数
+     * @param  {number} cellX  横向间距
+     * @param  {number} cellY  竖向间距
+     * @return {Array}  返回经纬度数组
+     */
+      function getGridLngLats(center, colNum, size, cellX, cellY) {
+        var pxCenter = map.lnglatToPixel(center);
+        var rowNum = Math.ceil(size / colNum);
+        var startX = pxCenter.getX(),
+          startY = pxCenter.getY();
+        cellX = cellX || 70;
+        cellY = cellY || 70;
+        var lngLats = [];
+        for (var r = 0; r < rowNum; r++) {
+          for (var c = 0; c < colNum; c++) {
+            var x = startX + (c - (colNum - 1) / 2) * cellX;
+            var y = startY + (r - (rowNum - 1) / 2) * cellY;
+            lngLats.push(map.pixelToLngLat(new AMap.Pixel(x, y)));
+            if (lngLats.length >= size) {
+              break;
+            }
+          }
+        }
+        return lngLats;
+      }
+    </script>
+  </body>
+</html>

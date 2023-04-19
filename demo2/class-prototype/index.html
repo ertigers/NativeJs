@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>class类名与prototype实现构造函数</title>
+  <link rel="stylesheet" href="../reset.css">
+</head>
+<body>
+  <script>
+    // prototype的方式
+    // function Person(name,age){
+    //   this.name = name 
+    //   this.age = age
+    // }
+    // Person.prototype.sayHi = function () {
+    //   return "你好，我叫" + this.name
+    // }
+
+
+    // class的方式
+    class Person {
+      constructor(name,age) {
+        this.name = name
+        this.age = age
+      }
+      sayHi() {
+        return "你好，我叫" + this.name
+      }
+    }
+  </script>
+</body>
+</html>

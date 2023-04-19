@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let list = [
+        { name: "安徽", index: 1 },
+        { name: "安徽", index: 2 },
+        { name: "合肥", index: 3 },
+        { name: "合肥", index: 4 },
+        { name: "六安", index: 5 },
+        { name: "六安", index: 6 },
+      ];
+      let goalList = [
+        { name: "安徽", children: [{ index: 1 }, { index: 2 }] },
+        { name: "合肥", children: [{ index: 3 }, { index: 4 }] },
+        { name: "六安", children: [{ index: 5 }, { index: 6 }] },
+      ];
+
+      
+
+// 把源数据先变成目标数据的规则
+// let oldDataRule = []
+// list.forEach(el => {
+//   let oldObj = {
+//     name: el.name,
+//     children:[{ index: el.index }]
+//   }
+//   oldDataRule.push(oldObj)
+// })
+ 
+// /**
+//  * 先去重，后合并
+//  * 1、源数据去重
+//  * 2、把去重后的数据和源数据中相同name的数据合并children
+// */
+// let newData = []
+// let newObj = {}
+// oldDataRule.forEach((el, i) => {
+//   if (!newObj[el.name]) {
+//     newData.push(el);
+//     newObj[el.name] = true;
+//   } else {
+//     newData.forEach(el => {
+//       if (el.name === oldDataRule[i].name) {
+//         el.children = el.children.concat(oldDataRule[i].children);
+//         // el.children = [...el.children, ...oldDataRule[i].children]; // es6语法
+//       }
+//     })
+//   }
+// })
+  
+// console.log(newData);
+
+
+
+
+let taskList = []
+let newObj = {}
+list.forEach( el => {
+  if (!newObj[el.name]) {
+    taskList.push({
+      name: el.name,
+      children:[{ index: el.index }]
+    });
+    newObj[el.name] = true;
+  } else {
+    taskList.forEach(item => {
+      if (item.name === el.name) {
+        item.children.push({index:el.index})
+      }
+    })
+  }
+})
+
+console.log(taskList);
+
+
+    </script>
+  </body>
+</html>
