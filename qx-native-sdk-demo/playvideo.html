@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>视频浏览</title>
+    <meta name="google" content="notranslate" />
+    <script language="javascript" type="text/javascript" src="conf.js?v=211121211"></script>
+    <script language="javascript" type="text/javascript" src="include.js?v=2221111"></script>
+    <link href="utility/video/video-js.css" rel="stylesheet">
+    <script type="text/javascript" src="./utility/jquery.fullscreen-min.js"></script>
+    <script src="utility/video/videojs-ie8.min.js"></script>
+    <script src="utility/video/video.js"></script>
+    <script src="utility/video/videojs-flash.min.js"></script>
+    <script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
+    <script type="text/javascript" src="./webgldisplay.js"></script>
+    <script type="text/javascript" src="./utils/help.js"></script>
+    <script type="text/javascript" src="./utils/ajax.js"></script>
+
+    <style>
+        * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        }
+        .header-wrapper {
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .header-wrapper .header-item{
+            height: 60px;
+            padding: 20px 40px;
+            text-decoration: none;
+            color: black;
+        }
+        .header-wrapper .active {
+            color: blue;
+        }
+        .home-wrapper {
+        display: flex;
+        justify-content: space-between;
+        }
+
+        .home-wrapper .left {
+        width: 280px;
+        flex-shrink: 0;
+        margin-right: 10px;
+
+        }
+        .home-wrapper .center {
+        width: 800px;
+        flex-shrink: 0;
+        }
+        .home-wrapper .right {
+        width: 600px;
+        flex-shrink: 0;
+        margin-left: 10px;
+
+        }
+
+        /* 左侧 */
+        .left #resource_tree {
+        width: 260px;
+        height: 100%;
+        overflow: auto;
+        }
+
+        /* 中间 */
+        .windowWrapper {
+        width: 800px;
+        display: flex;
+        flex-wrap: wrap;
+        position: relative;
+        }
+
+        .windowWrapper div {
+        width: 400px;
+        height: 300px;
+        border: 1px grey solid;
+        }
+        .windowWrapper span {
+            position: absolute;
+            color: rgb(255, 255, 255);
+            list-style: none;
+            border: none;
+        }
+        .windowWrapper .span1 {
+            bottom: 310px;
+            left: 10px;
+        }
+        .windowWrapper .span2 {
+            bottom: 310px;
+            left: 410px;
+        }
+        .windowWrapper .span3{
+            bottom: 10px;
+            left: 10px;
+        }
+        .windowWrapper .span4 {
+            bottom: 10px;
+            left: 410px;
+        }
+
+        .windowWrapper #video1,#video2,#video3,#video4 {
+        width: 100%;
+        height: 100%;
+        background-color: rgb(0, 0, 0);
+        }
+
+
+
+        /* 右侧 */
+        .right a {
+        display: inline-block;
+        width: 130px;
+        margin-right: 20px;
+        margin-bottom: 20px;
+        }
+        .right h3 {
+        margin: 0 0 15px;
+        }
+
+        .right .loginData {
+        padding-bottom: 10px;
+        } 
+
+        .row-content {
+        padding: 10px 0;
+        }
+
+        .presetpos-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        }
+
+        .presetpos-flex #select {
+        width: 130px;
+        height: 30px;
+        margin-right: 20px;
+        margin-bottom: 20px;}
+
+        .a-groups {
+        display: flex;
+        flex-wrap: wrap;
+        width: 600px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header-wrapper">
+        <a class="header-item active" href="./playvideo.html">视频浏览</a>
+        <a class="header-item" href="./query.html">查询回放</a>
+        <a class="header-item" href="./track.html">轨迹回放</a>
+    </div>
+    <div class="home-wrapper">
+        <div class="left">
+            <div class="easyui-tabs" data-options="fit:true,border:true">
+                <div title="视频分组">
+                    <div id="resource_tree" class="easyui-tree"></div>
+                </div>
+            </div>
+        </div>
+        <div class="cernter">
+            <div class="windowWrapper">
+                <div id="windowbox1" onclick="changestyle(windowbox1.id)" ondblclick="videofullscreen(windowbox1)"></div>
+                <div id="windowbox2" onclick="changestyle(windowbox2.id)" ondblclick="videofullscreen(windowbox2)"></div>
+                <div id="windowbox3" onclick="changestyle(windowbox3.id)" ondblclick="videofullscreen(windowbox3)"></div>
+                <div id="windowbox4" onclick="changestyle(windowbox4.id)" ondblclick="videofullscreen(windowbox4)"></div>
+                <span class="span1"></span>
+                <span class="span2"></span>
+                <span class="span3"></span>
+                <span class="span4"></span>
+            </div>
+        </div>
+        <div class="right">
+            <h3>登录参数</h3>
+            <div class="loginData">
+                <div class="row-content">
+                    <label>登录IP：<input type="text" id='input1' value=""></label>
+                    <label>端口：<input type="text" id='input2' value=""></label>
+                </div>
+                <div class="row-content">
+                    <label>用户名：<input type="text" id='input3' value=""></label>
+                    <label>密码：<input type="text" id='input4' value=""></label>
+                </div>
+                <div class="row-content">
+                    <label>企业ID：<input type="text" id='input5' value=""></label>
+                    <span>
+                        是否通过网闸模式：
+                        <input class="radio" name="gatekeeper" id='input6' type="radio" value="1" />是
+                        <input class="radio" name="gatekeeper" id='input7' type="radio" value="0" />否
+                    </span>
+                </div>
+            </div>
+            <h3>云平台视频操作</h3>
+            <div class="btnWrapper a-groups">
+                <a id="connect_btn" class="easyui-linkbutton" onclick="connect()">连接平台</a>
+                <a id="close_btn" class="easyui-linkbutton" onclick="stopPlay('video')">停止视频</a>
+                <a id="starttalk" class="easyui-linkbutton" onclick="startcall()">开始喊话</a>
+                <a id="stoptalk" class="easyui-linkbutton" onclick="stopPlay('call')">停止喊话</a>
+                <a id="starttalk" class="easyui-linkbutton" onclick="starttalk()">开始对讲</a>
+                <a id="stoptalk" class="easyui-linkbutton" onclick="stopPlay('talk')">停止对讲</a>
+                <a class="easyui-linkbutton" onmousedown="ptzControls('zoomin');" onmouseup="ptzControls('stop');">放大图像</a>
+                <a class="easyui-linkbutton" onmousedown="ptzControls('zoomout');" onmouseup="ptzControls('stop');">缩小图像</a>
+                <a class="easyui-linkbutton" onmousedown="ptzControls('near');" onmouseup="ptzControls('stop');">拉近焦点</a>
+                <a class="easyui-linkbutton" onmousedown="ptzControls('faraway');" onmouseup="ptzControls('stop');">推远焦点</a>
+                <a class="easyui-linkbutton" onmousedown="ptzControls('augment');" onmouseup="ptzControls('stop');">增大光圈</a>
+                <a class="easyui-linkbutton" onmousedown="ptzControls('minish');" onmouseup="ptzControls('stop');">缩小光圈</a>
+            </div>
+            <h3>设置预置位</h3>
+            <div class="presetpos-flex a-groups">
+                <a id="setPresetPos" class="easyui-linkbutton" onmousedown="handletoSetPresetPos();">设置预置位</a>
+                <select name="设置预置位" id="select"></select>
+                <a class="easyui-linkbutton" onmousedown="startPresetPos();">前往预置位</a>
+                <a class="easyui-linkbutton" onmousedown="originalPresetPos();">前往最原始预置位</a>
+            </div>
+            <h3>旋转云平台</h3>
+            <div class="a-groups">
+                <a class="easyui-linkbutton" onmousedown="ptzControls('up');" onmouseup="ptzControls('stop');">上</a>
+                <a class="easyui-linkbutton" onmousedown="ptzControls('down');" onmouseup="ptzControls('stop');">下</a>
+                <a class="easyui-linkbutton" onmousedown="ptzControls('left');" onmouseup="ptzControls('stop');">左</a>
+                <a class="easyui-linkbutton" onmousedown="ptzControls('right');" onmouseup="ptzControls('stop');">右</a>
+            </div>
+            <h3>云存储操作</h3>
+            <div class="a-groups">
+                <a class="easyui-linkbutton" onclick="handleStartCloudStorage(1)">开始云连拍</a>
+                <a class="easyui-linkbutton" onclick="handleStopCloudStorage(1)">停止云连拍</a>
+                <a class="easyui-linkbutton" onclick="handleStartCloudStorage(0)">开始云录像</a>
+                <a class="easyui-linkbutton" onclick="handleStopCloudStorage(0)">停止云录像</a>
+                <a class="easyui-linkbutton" onclick="handleStartCloudSnapshot()">开始云抓拍</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    let token = "";
+    let device_list = [];
+
+    // ws重连接
+    let lockReconnect = false; //避免重复连接
+    let tt; // ws定时器
+
+    // 播放视频列表
+    let playerList = []  // 播放的视频列表
+    let currentVideoDomIndex = 1  // 当前选择的框框
+
+    changestyle('windowbox1')
+    getValue();
+    // 登录参数
+    input1.oninput = function(){
+	    _cf.connParams.address = input1.value;
+    }
+    input2.oninput = function(){
+	    _cf.connParams.port = input2.value;
+    }
+    input3.oninput = function(){
+	    _cf.connParams.user = input3.value;
+    }
+    input4.oninput = function(){
+	    _cf.connParams.password = input4.value;
+    }
+    input5.oninput = function(){
+	    _cf.connParams.epid = input5.value;
+    }
+    input6.oninput = function(){
+	    _cf.connParams.bfix = input6.value;
+    }
+    input7.oninput = function(){
+	    _cf.connParams.bfix = input7.value;
+    }
+
+
+    //创建平台连接
+    async function connect() {
+        let params = {
+            "address": _cf.connParams.address,
+            "port": _cf.connParams.port,
+            "user": _cf.connParams.user,
+            "password": _cf.connParams.password,
+            "epid": _cf.connParams.epid,
+            "fixaddr": _cf.connParams.bfix
+        }
+        const data = await login(params);
+        if (data && data.msg === "OK") {
+            token = data.token;
+            saveLocalStorage('token',token)
+            fetch_device(0, 200);
+            //存储设备列表
+            device_resource_tree();
+            let url = _cf.websocket_url + "?token=" + token;
+            if ("WebSocket" in window) {
+                var ws = new WebSocket(url);
+                ws.onmessage =  (evt) => {
+                    if (typeof evt === "object" && evt.data) {
+                        let msg = $.xml2json(evt.data);
+                        if(msg.Type === 'PlayEvent'){
+                            console.log('PlayEvent播放视频了哦');
+                            console.log(msg);
+                            let statusText = ''
+                            if(msg.Status === '1') {
+                                statusText = '连接中~'
+                            }
+                            if(msg.Status === '2') {
+                                statusText = '播放中~'
+                            }
+                            if(msg.Status === '3') {
+                                statusText = '播放完成~'
+                            }
+                            if(msg.Status === '4') {
+                                statusText = '播放失败~'
+                            }
+                            setTimeout(()=>{
+                                let index =  playerList.findIndex(item=>item.baseValue.playID === msg.PlayID)
+                                if(index != -1){
+                                    let domIndex = playerList[index].key
+                                    let span = '.span' + domIndex   
+                                    let str = $(span)[0].innerText.slice(0,8) + ''
+                                    $(span)[0].innerText = str + '  ' +  statusText
+                                }
+                            },1000)
+                        }
+                        let event = msg.E || null;
+                        if (event) {
+                            if (event.ID === "E_CU_Online") {
+                                $.messager.show({
+                                    title: '消息',
+                                    msg: '用户上线(' + (event.Desc.UserID + '@' + event.Desc.EPID) + ')',
+                                    timeout: 3000,
+                                    showType: 'slide'
+                                });
+                            } else if (event.ID === "E_CU_Offline") {
+                                $.messager.show({
+                                    title: '消息',
+                                    msg: '用户下线(' + (event.Desc.UserID + '@' + event.Desc.EPID) + ')',
+                                    timeout: 3000,
+                                    showType: 'slide'
+                                });
+                            } else if (event.ID === "E_PU_Online") {
+                                $.messager.show({
+                                    title: '消息',
+                                    msg: '设备上线.',
+                                    timeout: 3000,
+                                    showType: 'slide'
+                                });
+                            } else if (event.ID === "E_PU_Offline") {
+                                $.messager.show({
+                                    title: '消息',
+                                    msg: '设备下线.',
+                                    timeout: 3000,
+                                    showType: 'slide'
+                                });
+                            }  else if (event.ID === "PlayNtf") {
+                                console.log('PlayNtf');
+                                console.log(event);
+                            }
+                            // else {
+                            //     console.log(" no treatment event id " + (event["ID"] ? event["ID"] : ""));
+                            // }
+                        }
+                    }
+
+                };
+                ws.onclose = function () {
+                    console.log('连接设备的ws断开了');
+                    alert('与服务器断开连接，请刷新页面，重新连接~')
+                }
+                ws.onerror = function () {
+                    console.log('连接设备的ws发生错误了');
+                    alert('与服务器连接错误，请刷新页面，重新连接~')
+                }
+            } else {
+                console.log("not support web socket.");
+            }
+        } else {
+            window.alert('登录失败')
+        }
+    }
+    window.onbeforeunload = function (e) {
+        console.log('关闭ws');
+        ws.close()
+    };
+
+    //获取设备列表
+    async function fetch_device(offset, count) {
+        let params = {
+            offset: offset,
+            count: count,
+            token: token,
+        };
+        const data = await getDeviceList(params);
+        if(data instanceof Array) {
+            // device_list = device_list.concat(data);
+            // if(data.length === count) {
+            //     offset += count;
+            //     fetch_device(offset, count);
+            // }else {
+            //     render_device_nodes();
+            // }
+            device_list = device_list.concat(data);
+            render_device_nodes();
+        }else {
+            console.log('获取设备列表失败');
+        }
+    }
+
+    // 加载在线设备
+    function render_device_nodes() {
+        let data = new Array();
+        for (let i = 0; i < device_list.length; i++) {
+            let deviceItem = device_list[i];
+            let icon = "icon-device-offline";
+            // if (deviceItem.OnlineFlag === '1' && deviceItem.Type != 'DEC') {
+            if (deviceItem.OnlineFlag === '1') {
+                icon = "icon-device-online";
+                data.push({
+                    id: deviceItem.$,
+                    text: deviceItem.Name,
+                    iconCls: icon,
+                    Type : deviceItem.Type,
+                    attributes: {
+                        list: deviceItem
+                    },
+                    state: "closed",
+                    children: [{
+                        text: '正在查询资源……'
+                    }]
+                });
+            }
+        }
+        data.sort((a, b) => {
+            return b.attributes.list.OnlineFlag - a.attributes.list.OnlineFlag;
+        });
+        $('#resource_tree').tree('append', {
+            data: data
+        });
+    }
+
+    // 渲染页面，处理视频播放逻辑
+    function device_resource_tree() {
+        $('#resource_tree').tree({
+            data: [],
+            onDblClick: function (node){
+                fetchPlayID(node);
+            },
+            onExpand: async function (node) {
+                let childs = $(this).tree('getChildren', node.target);
+                if (childs.length == 1) {
+                    if (node.children[0].text === "正在查询资源……") {
+                        let newList = node.attributes.list;
+                        let params = {
+                            puid: newList.$,
+                            token
+                        };
+                        let data = await getDeviceByPuid(params)
+                        let res = data.Res
+                        let videoList = [];
+                        let childNodes = new Array();
+                        for (let j = 0; j < res.length; j++) {
+                            let resource = res[j];
+                            let icon =''
+                            if (resource.Type != "IV") {
+                                continue;
+                            } else {
+                                videoList = resource;
+                                let iconsuffix = "offline";
+                                icon = "icon-camera-" + iconsuffix;
+                                if (newList.OnlineFlag == 1) {
+                                    let iconsuffix = "online";
+                                    icon = "icon-camera-" + iconsuffix;
+                                }
+                            }
+                            childNodes.push({
+                                id: newList.$ + "_" + videoList.Idx,
+                                text: videoList.Name,
+                                iconCls: icon,
+                                attributes: {
+                                    newList: newList,
+                                    self: videoList
+                                }
+                            });
+                        }
+                        //删除load节点
+                        for (let i = 0; i < childs.length; i++) {
+                            $('#resource_tree').tree('remove', childs[i].target);
+                        }
+                        if(childNodes.length === 0) {
+                            $('#resource_tree').tree('append', {
+                                parent: node.target,
+                                data: [{text:'无设备'}]
+                            });
+                        }
+                        if (childNodes.length > 0) {
+                            $('#resource_tree').tree('append', {
+                                parent: node.target,
+                                data: childNodes
+                            });
+                        }
+                    }
+                }
+            }
+        })
+    }
+    // 清空DOM
+    function clearVideoDom(domIndex) {
+        // 先暂停内部播放器
+        let windowBox = '#windowbox' + domIndex
+        let videoId = 'video' + domIndex
+        let parent = $(windowBox);
+        parent && parent.empty()
+        // 清除字样
+        let span = '.span' + domIndex
+        $(span)[0].innerText = ''
+    }
+
+    // 暂时播放，删除播放记录
+    function deletePlayList(domIndex) {
+        playerList.forEach((item,index)=>{
+            if(item.key === domIndex) {
+                if(item.baseValue.type === 1 && flvjs.isSupported()){
+                    let flvPlayer = item.playValue.flvPlayer
+                    flvPlayer.unload();
+                    flvPlayer.detachMediaElement();
+                    flvPlayer.destroy();
+                    item.playValue = null;
+                    playerList.splice(index, 1);
+                }else if(item.baseValue.type === 2) {
+                    item.playValue.ws.close()
+                    item.playValue.ws = null
+                    item.playValue.reader = null
+                    item.playValue.videoPlayer = null
+                    item.playValue = null
+                    playerList.splice(index, 1);
+                }else{
+                    console.log('清空视频播放器出错了');
+                }
+            }
+        })
+    }
+    // 新建flvPlayer
+    function createFlvPlayer(url,videoElement,baseValue) {
+        currentVideoDomIndex = baseValue.currentIndex
+        let flvPlayer = flvjs.createPlayer({
+            type: 'flv',
+            url: url,
+            isLive: true,
+            hasAudio: false
+        }, {
+            enableWorker: false,
+            autoCleanupSourceBuffer: true, //清理缓冲区
+            enableStashBuffer: false,
+            stashInitialSize: 128, // 减少首桢显示等待时长
+            statisticsInfoReportInterval: 600
+        });
+        flvPlayer.attachMediaElement(videoElement);
+        flvPlayer.load();
+        setTimeout(function () {
+            flvPlayer.play();
+        }, 100);
+
+        // 对象监听
+        flvPlayer.on("scriptdata_arrived", function (e) {
+            console.log("视频正在播放");
+            playerList.push({ key: currentVideoDomIndex, playValue: { flvPlayer },  baseValue})
+            let span = '.span' + currentVideoDomIndex
+            $(span)[0].innerText = 'H264,Flv'
+        });
+        flvPlayer.on("error", function (e) {
+            //出现错误，重新播放
+            console.log("出现错误，重新播放");
+            flvPlayer.pause();
+            flvPlayer.unload();
+            flvPlayer.detachMediaElement();
+            flvPlayer.destroy();
+            flvPlayer= null;
+            // setTimeout(() => {
+            //     createFlvPlayer(url,videoElement,baseValue)
+            // }, 100)
+        });
+    }
+    // 新建ws
+    function createWebSocket(url,videoElement,baseValue) {
+        currentVideoDomIndex = baseValue.currentIndex
+        let videoPlayer = new WebGLDisplayer(videoElement);
+        let reader = new FileReader();
+        let buf = null
+        let version = null
+        let width = null
+        let nwidth = null
+        let height  = null
+        let nheight = null
+        let length = null
+        let data = null
+        reader.onload = function() {
+            buf = new Uint8Array(this.result);
+            version = buf.slice(0, 4);
+            width = buf.slice(4, 6);
+            nwidth = width[1] << 8;
+            nwidth += width[0];
+            height = buf.slice(6, 8);
+            nheight = height[1] << 8;
+            nheight += height[0];
+            length = buf.slice(8, 12);
+            data = buf.slice(12);
+            videoPlayer.renderImg(nwidth,nheight,data);
+        }
+        let ws = new WebSocket(url);
+        ws.onopen = function () {
+            // 播放成功，加入数组
+            playerList.push({ key: currentVideoDomIndex, playValue: { videoPlayer,reader,ws },  baseValue})
+            let span = '.span' + currentVideoDomIndex
+            $(span)[0].innerText = 'H265,Yuv'
+        }
+        ws.onmessage = function (data) {
+            reader.readAsArrayBuffer(data.data);
+        };
+        ws.onclose = function () {
+            console.log("onclose.");
+            // reconnectWebSocket(url,videoElement,baseValue);
+        }
+        ws.onerror = function () {
+            console.log("onerror.");
+            reconnectWebSocket(url,videoElement,baseValue);
+        }
+    }
+    // ws重新连接
+    function reconnectWebSocket(url,videoElement,baseValue) {
+      if(lockReconnect) {
+        return;
+      };
+      lockReconnect = true;
+      //没连接上会一直重连，设置延迟避免请求过多
+      tt && clearTimeout(tt);
+      tt = setTimeout(function () {
+        createWebSocket(url,videoElement,baseValue);
+        console.log('重新连接');
+        lockReconnect = false;
+      }, 4000);
+    }
+
+    // 创建video和canvas DOM
+    function createVideoDom(type) {
+        let windowBox = '#windowbox' + currentVideoDomIndex
+        let videoId = 'video' + currentVideoDomIndex
+        let parent = $(windowBox);
+        if(type === 1) {
+            let videoDom = document.createElement("video");
+            videoDom.id = videoId;
+            videoDom.width = '400';
+            videoDom.height = '300';
+            parent.append(videoDom);
+        }else if(type === 2) {
+            let videoDom = document.createElement("canvas");
+            videoDom.id = videoId;
+            videoDom.width = '400';
+            videoDom.height = '300';
+            parent.append(videoDom);
+        }
+    }
+    // 选择渲染的框框
+    function chooseFrame(puid,idx) {
+        const index1 = playerList.findIndex(item => item.baseValue.puid === puid && item.baseValue.idx === idx) // 列表里面有没有当前视频
+        const index2 = playerList.findIndex(item=>item.key === currentVideoDomIndex) // 当前框是否有视频
+        if(index1 != -1) {
+            // 列表有重复视频
+            currentVideoDomIndex = playerList[index1].key
+            changestyle('windowbox'+currentVideoDomIndex)
+            return
+        }
+        // 当前框有视频,选择下一个
+        if(index2 != -1){
+            // 框有视频
+            if (currentVideoDomIndex < 4) {
+                currentVideoDomIndex += 1;
+                changestyle('windowbox'+currentVideoDomIndex)
+            } else {
+                currentVideoDomIndex = 1;
+                changestyle('windowbox'+currentVideoDomIndex)
+            }  
+        }        
+    }
+    // 获取playID
+    async function fetchPlayID(node) {
+        if(node.text === "无设备") return window.alert('没有可以播放的设备');
+        let puid = node.attributes.newList.$
+        let idx = parseInt(node.attributes.self.Idx)
+        chooseFrame(puid,idx)
+        const baseValue = {
+            puid,
+            idx,
+            url:'',
+            type: '',
+            playID: '',
+            callID:'',
+            talkID:'',
+            pictureID:'',
+            videoID:'',
+            currentIndex:currentVideoDomIndex
+        }
+        let params = {
+          puid,
+          idx,
+          stream:0,
+          token
+        }
+        let data = await getPlayVideoId(params)
+        if (data && data.playID) {
+            baseValue.playID = data.playID;
+            baseValue.type = data.type
+        }
+        // 选择播放类型
+        if(baseValue.type === 1) {
+            let url = _cf.flv_url + 'stream2.flv?playID=' + baseValue.playID;
+            baseValue.url = url
+            playvideoFlv(baseValue)
+        }else if(baseValue.type === 2){
+            let url = _cf.websocket_url + 'stream2.yuv?playID=' + baseValue.playID;
+            baseValue.url = url
+            playVideoYuv(baseValue)
+        }else {
+            console.log('选择播放类型参数错误');
+        }
+    }
+
+    // Flv视频播放
+    function playvideoFlv(baseValue) {
+        let { url } = baseValue
+        deletePlayList(currentVideoDomIndex)
+        clearVideoDom(currentVideoDomIndex)
+        createVideoDom(1)
+        let videoId = 'video' + currentVideoDomIndex
+        videoElement = document.getElementById(videoId);
+        videoElement.controls = false;
+        createFlvPlayer(url,videoElement,baseValue)
+    }
+
+    // Yuv播放视频
+    function playVideoYuv(baseValue) {
+        let { url } = baseValue
+        deletePlayList(currentVideoDomIndex)
+        clearVideoDom(currentVideoDomIndex)
+        createVideoDom(2)
+        let videoId = 'video' + currentVideoDomIndex
+        videoElement = document.getElementById(videoId);
+        if ("WebSocket" in window) {
+            createWebSocket(url,videoElement,baseValue)
+        } else {
+            console.log("not support web socket.");
+        }
+    }
+
+    //双击视频可以全屏播放
+    function videofullscreen(box) {
+        let p = '#' + box.id;
+        let videoDom = document.getElementById(box.id).children[0]
+        if(videoDom && videoDom.nodeName === 'CANVAS') {
+            if(videoDom.width === 400) {
+                videoDom.width = 1920
+                videoDom.height = 1080
+            }else if(videoDom.width === 1920){
+                videoDom.width = 400
+                videoDom.height = 300
+            }
+        }
+        $(p).fullScreen(true);
+        $(p).fullScreen(false);
+    }
+
+    //单击视频框添加样式
+    function changestyle(windowId) {
+        let p = '#' + windowId;
+        $(p).siblings().css("border", "1px grey solid");
+        $(p).css("border", "1px rgb(97, 19, 239) solid");
+        let windowIndexMap ={'windowbox1':1,'windowbox2':2,'windowbox3':3,'windowbox4':4}
+        currentVideoDomIndex = windowIndexMap[windowId]
+    }
+
+    // 获取当前操作元素
+    function getPlayerItem() {
+        let playerItem = null
+        playerList.forEach((item,index)=>{
+            if(item.key === currentVideoDomIndex) {
+                playerItem = item
+            }
+        })
+        if (playerItem && playerItem.baseValue && playerItem.baseValue.puid){
+            return playerItem
+        }else{
+            window.alert('请选择需要操作的视频');
+            return false
+        }
+    }
+
+    // 云台操作（13个指令）
+    async function ptzControls(option) {
+        let playerItem = getPlayerItem()
+        if(!playerItem) return
+        let params = {
+            puid: playerItem.baseValue.puid,
+            idx: playerItem.baseValue.idx || 0,
+            control: option,
+            token
+        }
+        let data = await ptzControl(params)
+        console.log(data);
+    }
+    //动态添加select里面的option
+    function getValue() {
+        let data = new Array();
+        data.length = 256;
+        for (let i = 1; i < data.length; i++) {
+            $("#select").append("<option value='" + i + "'>预置位" + i + "</option>");
+        }
+        input1.value = _cf.connParams.address
+        input2.value = _cf.connParams.port
+        input3.value = _cf.connParams.user
+        input4.value = _cf.connParams.password
+        input5.value = _cf.connParams.epid
+        if(_cf.connParams.bfix === 1) {
+            input6.checked = true
+        }
+        if(_cf.connParams.bfix === 0) {
+            input7.checked = true
+        }
+
+    }
+    //设置预置位 
+    function handletoSetPresetPos() {
+        let playerItem = getPlayerItem()
+        if(!playerItem) return
+        let value = $("#select option:selected").val();
+        if (value != "") {
+            pos = value;
+        }
+        let params = {
+            puid: playerItem.baseValue.puid,
+            idx: playerItem.baseValue.idx,
+            PresetPos: pos,
+            token
+        }
+        setPresetPos(params).then(res=>console.log(res))
+    }
+    //前往预置位
+    function startPresetPos() {
+        let playerItem = getPlayerItem()
+        if(!playerItem) return
+        let value = $("#select").val();
+        let params= {
+            puid: playerItem.baseValue.puid,
+            idx: playerItem.baseValue.idx,
+            PresetPos: value,
+            token
+        }
+        moveToPresetPos(params).then(res=>console.log(res))
+    }
+    //前往最原始预置位
+    function originalPresetPos() {
+        let playerItem = getPlayerItem()
+        if(!playerItem) return
+        let params = {
+            puid: playerItem.baseValue.puid,
+            idx: playerItem.baseValue.idx,
+            token
+        }
+        gotoOriginalPresetPos(params).then(res=>console.log(res))
+    }
+    //开始云抓拍-单张
+    async function handleStartCloudSnapshot() {
+        let playerItem = getPlayerItem()
+        if(!playerItem) return
+        let params = {
+            puid: playerItem.baseValue.puid,
+            idx: playerItem.baseValue.idx,
+            stream:0,
+            token
+        }
+        let data =  await startCloudSnapshot(params)
+        $.messager.show({
+            title: '消息',
+            msg: '云抓拍成功~.',
+            timeout: 800,
+            showType:'show',
+            style:{
+                top:document.body.scrollTop+document.documentElement.scrollTop,
+            }
+        });
+    }
+    //开始云储存（云连拍、云录像）
+    async function handleStartCloudStorage(type) {
+        let typeMap = {
+            '0': '录像', 
+            '1': '连拍', 
+        }
+        let playerItem = getPlayerItem()
+        if(!playerItem) return
+        let data
+        if(type == 0) {
+            let params = {
+                puid: playerItem.baseValue.puid,
+                idx: playerItem.baseValue.idx,
+                duration: 5,
+                reserveDay: 30,
+                fileLength: 15,
+                type,
+                token
+            }
+           data = await startCloudStorage(params)  
+        }
+        if(type == 1) {
+            let params = {
+                puid: playerItem.baseValue.puid,
+                idx: playerItem.baseValue.idx,
+                duration: 5,
+                reserveDay: 30,
+                fileLength: 5,  // 间隔5s连拍
+                type,
+                token
+            }
+            data = await startCloudStorage(params)  
+        }
+
+        console.log(data);
+        if(type) {
+            playerItem.baseValue.pictureID = data.Param.ID 
+         } else{
+            playerItem.baseValue.videoID = data.Param.ID 
+         } 
+        $.messager.show({
+            title: '消息',
+            msg: `开始云${typeMap[type]}~`,
+            timeout: 800,
+            showType:'show',
+            style:{
+                top:document.body.scrollTop+document.documentElement.scrollTop,
+            }
+        });
+    }
+    //停止云储存（云连拍、云录像）
+    async function handleStopCloudStorage(type) {
+        let typeMap1 = {
+            '0': '录像', 
+            '1': '连拍', 
+        }
+        let playerItem = getPlayerItem()
+        if(!playerItem) return
+        let typeMap = { '0':'videoID','1':'pictureID' }
+        let id = playerItem.baseValue[typeMap[type]]
+        if(!id) return 
+        let params = {
+            id,
+            token
+        }
+        await stopCloudStorage(params)
+        playerItem.baseValue[typeMap[type]] = ''
+        $.messager.show({
+            title: '消息',
+            msg: `已停止云${typeMap1[type]}~`,
+            timeout: 800,
+            showType:'show',
+            style:{
+                top:document.body.scrollTop+document.documentElement.scrollTop,
+            }
+        });
+    }
+
+
+    //开始喊话
+    async function startcall() {
+        let playerItem = getPlayerItem()
+        if(!playerItem) return
+        let puid = playerItem.baseValue.puid
+        let params = { puid,token }
+        let data = await startCall(params)
+        if(!data && !data.playID) return
+        playerItem.baseValue.callID = data.playID
+        $.messager.show({
+            title: '消息',
+            msg: '已启动喊话~.',
+            timeout: 800,
+            showType:'show',
+            style:{
+                top:document.body.scrollTop+document.documentElement.scrollTop,
+            }
+        });
+    }
+     //开始对讲
+    async function starttalk() {
+        let playerItem = getPlayerItem()
+        if(!playerItem) return
+        let puid = playerItem.baseValue.puid
+        let params = { puid,token }
+        let data = await startCall(params)
+        if(!data && !data.playID) return
+        playerItem.baseValue.talkID = data.playID
+        $.messager.show({
+            title: '消息',
+            msg: '已启动对讲~.',
+            timeout: 800,
+            showType:'show',
+            style:{
+                top:document.body.scrollTop+document.documentElement.scrollTop,
+            }
+        });
+    }
+    // 暂停播放，暂停喊话，暂停对讲
+    async function stopPlay(type) {
+        let playerItem = getPlayerItem()
+        if(!playerItem) return
+        let ID = ''
+        typeMap = {'video':'playID' ,'call':'callID' ,'talk':'talkID'}
+        ID = playerItem.baseValue[typeMap[type]]
+        if(!ID) return
+        let params = {
+            playID: ID,
+            token
+        }
+        let data = await stoptStream(params)
+        if(data.msg === 'OK') {
+            playerItem.baseValue[typeMap[type]] = ''
+            if(type === 'video') {
+                deletePlayList(currentVideoDomIndex)
+                clearVideoDom(currentVideoDomIndex)
+            }
+            $.messager.show({
+                title: '消息',
+                msg: '已停止~.',
+                timeout: 800,
+                showType:'show',
+                style:{
+                    top:document.body.scrollTop+document.documentElement.scrollTop,
+                }
+            });            
+        }else {
+            window.alert('服务端视频暂停出错~');
+        }
+    }
+</script>

@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>查询回放</title>
+    <meta name="google" content="notranslate" />
+    <script language="javascript" type="text/javascript" src="conf.js?v=211121211"></script>
+
+    <script language="javascript" type="text/javascript" src="include.js?v=2221111" ></script>
+    <link href="utility/video/video-js.css" rel="stylesheet" />
+    <script type="text/javascript" src="./utility/jquery.fullscreen-min.js"></script>
+    <script src="utility/video/videojs-ie8.min.js"></script>
+    <script src="utility/video/video.js"></script>
+    <script src="utility/video/videojs-flash.min.js"></script>
+    <script type="text/javascript" src="./utility/moment.js"></script>
+    <script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
+    <script type="text/javascript" src="./webgldisplay.js"></script>
+    <script type="text/javascript" src="./utils/ajax.js"></script>
+    <script type="text/javascript" src="./utils/help.js"></script>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+          height: 100%;
+      }
+      body {
+          height: 90%;
+      }
+      .header-wrapper {
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .header-wrapper .header-item {
+        height: 60px;
+        padding: 20px 40px;
+        text-decoration: none;
+        color: black;
+      }
+      .header-wrapper .active {
+        color: blue;
+      }
+      .home-wrapper {
+        display: flex;
+        height: 100%;
+      }
+      .home-wrapper .left {
+        width: 340px;
+        flex-shrink: 0;
+        margin-right: 10px;
+      }
+      /* 左侧 */
+      .left #resource_tree {
+        width: 300px;
+        height: 56%;
+        overflow: auto;
+      }
+      .left #resource_tree1 {
+        width: 300px;
+        height: 86%;
+        overflow: auto;
+      }
+      .left .search-wrapper{
+        padding: 0 10px;
+        width: 330px;
+        height: 300px;
+        overflow: auto;
+      }
+      .left .btn-wrapper{
+        width: 300px;
+        height: 100px;
+        overflow: auto;
+      }
+      .btn-download {
+        width: 240px;
+        height: 30px;
+        margin: 0 auto;
+        line-height: 30px;        
+        border-radius: 6px;
+        color: #fff;
+        background-color: #00B4FF;
+        text-align: center;
+        cursor: pointer;
+      }
+      .btn-delete {
+        width: 240px;
+        height: 30px;
+        margin: 10px auto 0;
+        line-height: 30px;
+        border-radius: 6px;
+        color: #fff;
+        background-color: #FF6969;
+        text-align: center;
+        cursor: pointer;
+      }
+      .btn-search {
+        width: 240px;
+        height: 30px;
+        margin: 0 auto;
+        line-height: 30px;        
+        border-radius: 6px;
+        color: #fff;
+        background-color: #00B4FF;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .btn-row {
+        margin: 10px 0;
+      }
+
+      .home-wrapper .cernter {
+        flex: 1;
+      }
+
+        /* 中间 */
+        .windowWrapper {
+            width: 800px;
+            display: flex;
+            flex-wrap: wrap;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .windowWrapper div {
+        width: 400px;
+        height: 300px;
+        border: 1px grey solid;
+        }
+        .windowWrapper span {
+            position: absolute;
+            color: rgb(255, 255, 255);
+            list-style: none;
+            border: none;
+        }
+        .windowWrapper .span1 {
+            bottom: 310px;
+            left: 10px;
+        }
+        .windowWrapper .span2 {
+            bottom: 310px;
+            left: 410px;
+        }
+        .windowWrapper .span3{
+            bottom: 10px;
+            left: 10px;
+        }
+        .windowWrapper .span4 {
+            bottom: 10px;
+            left: 410px;
+        }
+
+        .windowWrapper #video1,#video2,#video3,#video4 {
+        width: 100%;
+        height: 100%;
+        background-color: rgb(0, 0, 0);
+        }
+        
+        /* 右侧 */
+        .right a {
+        display: inline-block;
+        width: 130px;
+        margin-right: 20px;
+        margin-bottom: 20px;
+        }
+        .right h3 {
+        margin: 0 0 15px;
+        }
+
+        .right .loginData {
+        padding-bottom: 10px;
+        } 
+
+        .row-content {
+        padding: 10px 0;
+        }
+
+        .presetpos-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        }
+
+        .presetpos-flex #select {
+        width: 130px;
+        height: 30px;
+        margin-right: 20px;
+        margin-bottom: 20px;
+        }
+
+        .a-groups {
+        display: flex;
+        flex-wrap: wrap;
+        width: 600px;
+        }
+
+        .download-wrapper {
+        width: 600px;
+        height: 600px;
+        }
+        .download-wrapper .download {
+            width: 600px;
+            height: 80px;
+            border: 1px solid black;
+        }
+    </style>
+  </head>
+
+  <body>
+    <div class="header-wrapper">
+      <a class="header-item" href="./playvideo.html">视频浏览</a>
+      <a class="header-item active" href="./query.html">查询回放</a>
+      <a class="header-item" href="./track.html">轨迹回放</a>
+    </div>
+    <div class="home-wrapper">
+      <div class="left">
+        <div id="tab" class="easyui-tabs" data-options="fit:true,border:true">
+          <div title="开始查询">
+            <ul id="resource_tree" checkbox='true' class="easyui-tree"></ul>
+            <div class="search-wrapper">
+                <div class="btn-row">储存类型</div>
+                <select id="select1" class="easyui-combobox" name="dept" style="width:280px;">
+                    <option value="0">云储存</option>
+                    <option value="1">前端存储</option>
+                </select>
+                <div class="btn-row">文件类型</div>
+                <select id="select2" class="easyui-combobox" name="dept1" style="width:280px;">
+                    <option value="0">录像</option>
+                    <option value="1">抓拍</option>
+                    <!-- <option value="2">音频</option> -->
+                </select>
+                <div class="btn-row">
+                    <span>起</span>
+                    <input id="timeStart" type="text" name="birthday" style="width:280px;">
+                </div>
+                <div class="btn-row">
+                    <span>止</span>
+                    <input id="timeEnd" type="text" name="birthday" style="width:280px;">
+                </div>
+                <div class="btn-search" onclick="searchVideo()">开始查询</div>
+            </div>
+          </div>
+          <div title="查询结果">
+            <ul id="resource_tree1" checkbox='true' class="easyui-tree"></ul>
+            <div class="btn-wrapper">
+                <div class="btn-download" onclick="download()">下载</div>
+                <div class="btn-delete">删除</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cernter">
+        <div class="windowWrapper">
+            <div id="windowbox1" onclick="changestyle(windowbox1.id)"></div>
+            <div id="windowbox2" onclick="changestyle(windowbox2.id)"></div>
+            <div id="windowbox3" onclick="changestyle(windowbox3.id)"></div>
+            <div id="windowbox4" onclick="changestyle(windowbox4.id)"></div>
+            <span class="span1"></span>
+            <span class="span2"></span>
+            <span class="span3"></span>
+            <span class="span4"></span>
+        </div>
+    </div>
+    <div class="right">
+        <h3>登录参数</h3>
+        <div class="loginData">
+            <div class="row-content">
+                <label>登录IP：<input type="text" id='input1' value=""></label>
+                <label>端口：<input type="text" id='input2' value=""></label>
+            </div>
+            <div class="row-content">
+                <label>用户名：<input type="text" id='input3' value=""></label>
+                <label>密码：<input type="text" id='input4' value=""></label>
+            </div>
+            <div class="row-content">
+                <label>企业ID：<input type="text" id='input5' value=""></label>
+                <span>
+                    是否通过网闸模式：
+                    <input class="radio" name="gatekeeper" id='input6' type="radio" value="1" />是
+                    <input class="radio" name="gatekeeper" id='input7' type="radio" value="0" />否
+                </span>
+            </div>
+        </div>
+        <h3>播放操作</h3>
+        <div class="btnWrapper a-groups">
+            <a class="easyui-linkbutton" onclick="connect()">连接平台</a>
+            <a class="easyui-linkbutton" onclick="puaseVod()">暂停点播</a>
+            <a class="easyui-linkbutton" onclick="restoreVod()">继续点播</a>
+            <a class="easyui-linkbutton" onclick="stopVod()">停止点播</a>
+
+            <a class="easyui-linkbutton" onclick="setVodSpeed()">正常点播速度</a>
+            <a class="easyui-linkbutton" onclick="setVodSpeed(2)">点播速度*2</a>
+            <a class="easyui-linkbutton" onclick="setVodOffset(0.4)">调至40%</a>
+            <a class="easyui-linkbutton" onclick="setVodOffset(0.7)">跳至70%</a>
+        </div>
+        <h3>下载列表</h3>
+        <div class="download-wrapper">
+            <ul class="btnWrapper a-groups">
+                <a class="easyui-linkbutton" onclick="pauseDownload()">暂停下载</a>
+                <a class="easyui-linkbutton" onclick="restoreDownload()">恢复下载</a>
+                <a class="easyui-linkbutton" onclick="stopDownload()">停止下载</a>
+            </ul>
+            <div id="download1" class="download" onclick="changestyle1(download1.id)">
+ 
+            </div>
+            <div id="download2" class="download" onclick="changestyle1(download2.id)"></div>
+            <div id="download3" class="download" onclick="changestyle1(download3.id)"></div>
+            <div id="download4" class="download" onclick="changestyle1(download4.id)"></div>
+        </div>
+    </div>
+    </div>
+  </body>
+</html>
+<script>
+    let token = ""
+    let device_list = []            // 开始查询-设备列表
+    let selectList = []             // 开始查询-选中的设备
+    let local = ''                  // 存储位置，云/前端
+    let type = ''                   // 视频，图片，音频
+
+    let resultList = []             // 查询结果-视频列表
+    let selectResultList = []       // 查询结果-选中的视频
+
+
+    let playList = []               // 点播-播放列表
+    let currentPlay = {}            // 点播-当前播放对象
+    let currentPlayIndex = 0        // 点播-当前播放index
+
+    let downLoadList = []           // 下载列表
+    let currentDownload = {}        // 当前下载项
+    let currentDownloadIndex = 0    // 当前下载项index
+
+    window.onload = function () {
+        init()
+    }
+    function init() {
+        let start = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
+        let end = moment().endOf('day').format('YYYY-MM-DD HH:mm:ss')
+        $('#timeStart').datetimebox({
+            value: start,
+            required: true,
+            showSeconds: true
+        });
+        $('#timeEnd').datetimebox({
+            value: end,
+            required: true,
+            showSeconds: true
+        });
+        input1.value = _cf.connParams.address
+        input2.value = _cf.connParams.port
+        input3.value = _cf.connParams.user
+        input4.value = _cf.connParams.password
+        input5.value = _cf.connParams.epid
+        if(_cf.connParams.bfix === 1) {
+            input6.checked = true
+        }
+        if(_cf.connParams.bfix === 0) {
+            input7.checked = true
+        }
+        changestyle('windowbox1')
+        changestyle1('download1')
+    }
+    // 登录参数
+    input1.oninput = function(){
+        _cf.connParams.address = input1.value;
+    }
+    input2.oninput = function(){
+        _cf.connParams.port = input2.value;
+    }
+    input3.oninput = function(){
+        _cf.connParams.user = input3.value;
+    }
+    input4.oninput = function(){
+        _cf.connParams.password = input4.value;
+    }
+    input5.oninput = function(){
+        _cf.connParams.epid = input5.value;
+    }
+    input6.oninput = function(){
+        _cf.connParams.bfix = input6.value;
+    }
+    input7.oninput = function(){
+        _cf.connParams.bfix = input7.value;
+    }
+    //创建平台连接
+    async function connect() {
+        playListInit()
+        let params = {
+            "address": _cf.connParams.address,
+            "port": _cf.connParams.port,
+            "user": _cf.connParams.user,
+            "password": _cf.connParams.password,
+            "epid": _cf.connParams.epid,
+            "fixaddr": _cf.connParams.bfix
+        }
+        const data = await login(params);
+        if (data && data.msg === "OK") {
+            token = data.token;
+            saveLocalStorage('token',token)
+            fetchDeviceList(0, 200);
+            //存储设备列表
+            device_resource_tree();
+            let url = _cf.websocket_url + "?token=" + token;
+            if ("WebSocket" in window) {
+                var ws = new WebSocket(url);
+                ws.onmessage =  (evt) => {
+                    if (typeof evt === "object" && evt.data) {
+                        let msg = $.xml2json(evt.data);
+                        if(msg.Type === 'PlayEvent'){
+                            console.log('PlayEvent播放视频了哦',msg);
+                            let statusText = ''
+                            if(msg.Status === '1') {
+                                statusText = '连接中~'
+                            }
+                            if(msg.Status === '2') {
+                                statusText = '播放中~'
+                            }
+                            if(msg.Status === '3') {
+                                statusText = '播放完成~'
+                            }
+                            if(msg.Status === '4') {
+                                statusText = '播放失败~'
+                            }
+                            setTimeout(()=>{
+                                let index =  playList.findIndex(item=>item.baseValue.playID === msg.PlayID)
+                                if(index != -1){
+                                    let domIndex = playList[index].key
+                                    let span = '.span' + domIndex   
+                                    let str = $(span)[0].innerText.slice(0,8) + ''
+                                    $(span)[0].innerText = str + '  ' +  statusText
+                                }
+                            },2000)
+                        }
+                        if(msg.Type === 'DownlaodEvent'){
+                            // 在ws事件中处理：
+                            downLoadList.forEach(item=>{
+                                if(item.downloadID === msg.DownloadID) {
+                                    let downloadDom = $(`#download${item.key}`)[0]
+                                    let progress = msg.Progress
+                                    let statusText = '连接中~'
+                                    if(msg.Status === '2') {
+                                        statusText = '正在下载~'
+                                    }
+                                    if(msg.Status === '3') {
+                                        statusText = '下载完成~'
+                                        item.finishStatus = true
+                                    }
+                                    if(msg.Status === '4') {
+                                        statusText = '下载失败！'
+                                    }
+                                    downloadDom.innerHTML =  `
+                                    <span>${item.name}</span>
+                                    <div>${statusText}</div>
+                                    <div>下载进度:${progress}%</div>`
+                                }
+                            })
+                        }
+                        let event = msg.E || null;
+                        if (event) {
+                            if (event.ID === "E_CU_Online") {
+                                $.messager.show({
+                                    title: '消息',
+                                    msg: '用户上线(' + (event.Desc.UserID + '@' + event.Desc.EPID) + ')',
+                                    timeout: 3000,
+                                    showType: 'slide'
+                                });
+                            } else if (event.ID === "E_CU_Offline") {
+                                $.messager.show({
+                                    title: '消息',
+                                    msg: '用户下线(' + (event.Desc.UserID + '@' + event.Desc.EPID) + ')',
+                                    timeout: 3000,
+                                    showType: 'slide'
+                                });
+                            } else if (event.ID === "E_PU_Online") {
+                                $.messager.show({
+                                    title: '消息',
+                                    msg: '设备上线.',
+                                    timeout: 3000,
+                                    showType: 'slide'
+                                });
+                            } else if (event.ID === "E_PU_Offline") {
+                                $.messager.show({
+                                    title: '消息',
+                                    msg: '设备下线.',
+                                    timeout: 3000,
+                                    showType: 'slide'
+                                });
+                            }
+                            // else {
+                            //     console.log(" no treatment event id " + (event["ID"] ? event["ID"] : ""));
+                            // }
+                        }
+                    }
+
+                };
+                ws.onclose = function () {
+                    console.log('连接设备的ws断开了');
+                    alert('与服务器断开连接，请刷新页面，重新连接~')
+                }
+                ws.onerror = function () {
+                    console.log('连接设备的ws发生错误了');
+                    alert('与服务器连接错误，请刷新页面，重新连接~')
+                }
+            } else {
+                console.log("not support web socket.");
+            }
+        } else {
+            window.alert('登录失败')
+        }
+    }
+    window.onbeforeunload = function (e) {
+        console.log('关闭ws');
+        ws.close()
+    };
+    // 渲染页面，处理视频播放逻辑
+    function device_resource_tree() {
+        $('#resource_tree').tree({
+            data: [],
+            onExpand: async function (node) {
+                let childs = $(this).tree('getChildren', node.target);
+                if (childs.length == 1) {
+                    if (node.children[0].text === "正在查询资源……") {
+                        let newList = node.attributes.list;
+                        let params = {
+                            puid: newList.$,
+                            token
+                        };
+                        let data = await getDeviceByPuid(params)
+                        let res = data.Res
+                        let videoList = [];
+                        let childNodes = new Array();
+                        for (let j = 0; j < res.length; j++) {
+                            let resource = res[j];
+                            let icon =''
+                            if (resource.Type != "IV") {
+                                continue;
+                            } else {
+                                videoList = resource;
+                                let iconsuffix = "offline";
+                                icon = "icon-camera-" + iconsuffix;
+                                if (newList.OnlineFlag == 1) {
+                                    let iconsuffix = "online";
+                                    icon = "icon-camera-" + iconsuffix;
+                                }
+                            }
+                            childNodes.push({
+                                id: newList.$ + "_" + videoList.Idx,
+                                text: videoList.Name,
+                                iconCls: icon,
+                                attributes: {
+                                    newList: newList,
+                                    self: videoList
+                                }
+                            });
+                        }
+                        //删除load节点
+                        for (let i = 0; i < childs.length; i++) {
+                            $('#resource_tree').tree('remove', childs[i].target);
+                        }
+                        if(childNodes.length === 0) {
+                            $('#resource_tree').tree('append', {
+                                parent: node.target,
+                                data: [{text:'无设备'}]
+                            });
+                        }
+                        if (childNodes.length > 0) {
+                            $('#resource_tree').tree('append', {
+                                parent: node.target,
+                                data: childNodes
+                            });
+                        }
+                    }
+                }
+            },
+            onCheck: async function (node) {
+                // 选择选中的节点
+                let childNodes = new Array();
+                if(node.children) {
+                    if(node.checked){
+                        // 枝节点
+                        let childs = node.children
+                        if (childs.length == 1 && node.children[0].text === "正在查询资源……") {
+                            let newList = node.attributes.list;
+                            let params = {
+                                puid: newList.$,
+                                token
+                            };
+                            let data = await getDeviceByPuid(params)
+                            let res = data.Res
+                            let videoList = [];
+                            for (let j = 0; j < res.length; j++) {
+                                let resource = res[j];
+                                if (resource.Type != "IV") {
+                                    continue;
+                                }
+                                childNodes.push({
+                                    puid: newList.$,
+                                    idx: Number(resource.Idx),
+                                    text:node.text
+                                });
+                            }
+                        }
+                        selectList = [...selectList,...childNodes]
+                    }else {
+                        const index = selectList.findIndex(item => item.puid === node.attributes.list.$)
+                        if(index != -1) {
+                            selectList.splice(index,1)                    
+                        }                        
+                    }
+                }else {
+                    // 叶子节点
+                    if(!node.checked){
+                        const index = selectList.findIndex(item => item.puid === node.attributes.newList.$)
+                        if(index != -1) {
+                            selectList.splice(index,1)                    
+                        }
+                    }else {
+                        childNodes.push({
+                            puid: node.attributes.newList.$,
+                            idx: Number(node.attributes.self.Idx),
+                            text:node.text
+                        });
+                        selectList = [...selectList,...childNodes]
+                    }
+                }
+            }
+        })
+    }
+    //获取设备列表
+    async function fetchDeviceList(offset, count) {
+        let params = {
+            offset: offset,
+            count: count,
+            token
+        };
+        const data = await getDeviceList(params);
+        if(data instanceof Array) {
+            // device_list = device_list.concat(data);
+            // if(data.length === count) {
+            //     offset += count;
+            //     fetchDeviceList(offset, count);
+            // }else {
+            //     render_device_nodes();
+            // }
+            device_list = device_list.concat(data);
+            render_device_nodes();
+        }else {
+            console.log('获取设备列表失败');
+        }
+    }
+    // 加载在线设备
+    function render_device_nodes() {
+        let data = new Array();
+        for (let i = 0; i < device_list.length; i++) {
+            let deviceItem = device_list[i];
+            let icon = "icon-device-offline";
+            // if (deviceItem.OnlineFlag === '1' && deviceItem.Type != 'DEC') {
+            if (deviceItem.OnlineFlag === '1') {
+                icon = "icon-device-online";
+                data.push({
+                    id: deviceItem.$,
+                    text: deviceItem.Name,
+                    iconCls: icon,
+                    Type : deviceItem.Type,
+                    attributes: {
+                        list: deviceItem
+                    },
+                    state: "closed",
+                    children: [{
+                        text: '正在查询资源……'
+                    }]
+                });
+            }
+        }
+        data.sort((a, b) => {
+            return b.attributes.list.OnlineFlag - a.attributes.list.OnlineFlag;
+        });
+        $('#resource_tree').tree('append', {
+            data: data
+        });
+    }
+    // 查询回放
+    async function searchVideo() {
+        console.log(selectList);
+        playListInit()
+        local = $('#select1').combobox('getValue')
+        type = $('#select2').combobox('getValue')
+        let startTime = $('#timeStart').datetimebox('getValue')
+        let endTime = $('#timeEnd').datetimebox('getValue')
+        let promiseArr = []
+        if(local==='0') {   //  云存储
+            let params = {
+                idx: 0,
+                begin: moment(startTime).unix() + '',
+                end: moment(endTime).unix() + '',
+                puid: '',
+                type,
+                domainRoadID: '0',
+                offset:0,
+                count:200,
+                token,
+            }
+            // 循环遍历查询
+            for(const item of selectList){
+                params.puid = item.puid
+                params.idx = item.idx
+                let data = await getCloudFile(params)
+                console.log(data);
+                if(data.File) {
+                    data.File.map(videoItem =>videoItem.puid = item.puid)
+                    resultList = [...resultList, ...data.File]
+                }
+            }
+        }
+        if(local === '1'){     //  前端文件
+            let params = {
+                idx: 0,
+                begin: moment(startTime).unix() + '',
+                end: moment(endTime).unix() + '',
+                puid: '',
+                type,
+                offset:0,
+                count:200,
+                token,
+            }
+            console.log(params);
+            // 循环遍历查询
+            for(const item of selectList) {
+                params.puid = item.puid
+                params.idx = item.idx
+                let data = await getDeviceFile(params)
+                console.log(data);
+                let isArray = data instanceof Array
+                if(isArray) {
+                    data.map(videoItem =>videoItem.puid = item.puid)
+                    resultList = [...resultList, ...data]                    
+                }
+            }
+        }
+        console.log(resultList);
+        $('#tab').tabs('select', 1)
+        result_resource_tree1()
+    }
+
+    // 渲染查询结果页面
+    function result_resource_tree1() {
+        $('#resource_tree1').tree({
+            data: resultList,    
+            formatter:function(node){
+                return node.Name;
+            },
+            onCheck: async function (node) {
+                // 选择选中的节点
+                if(node.checked) {
+                    selectResultList.push(node)
+                }else {
+                    const index = selectResultList.findIndex(item => item.Name === node.Name)
+                    if(index != -1){
+                        selectResultList.splice(index,1)
+                    }
+                }
+                console.log(selectResultList);
+            },
+            onDblClick: async function (node) {
+                // 云存储点播
+                if(local === '0') {
+                    let params = {
+                        id:node.ID,
+                        path:node.Path + node.Name,
+                        token
+                    }
+                    let data = await getVodCloudFile(params)
+                    data.Begin = node.Begin
+                    data.End = node.End
+                    beforePlayVideo(data)              
+                }
+                // 前端点播
+                if(local === '1'){
+                    let params = {
+                        puid:node.puid,
+                        path:node.Path + node.Name,
+                        token
+                    }
+                    let data = await getVodDeviceFile(params)
+                    data.Begin = node.Begin
+                    data.End = node.End
+                    beforePlayVideo(data)              
+                }
+            },
+        });
+    }
+
+    // 播放数据初始化
+    function playListInit() {
+        resultList = []
+        selectResultList = []
+        playList = []
+        downLoadList = []
+        currentPlay = {}
+        currentPlayIndex = 1
+    }
+    // 分类型播放
+    function beforePlayVideo (data) {
+        if(data && data.type ) {
+            chooseFrame(data.playID)
+            let baseValue = {
+                url:'',
+                type: '',
+                playID: data.playID,
+                currentIndex: currentPlayIndex,
+                Begin:Number(data.Begin),
+                End:Number(data.End),
+            }
+            deletePlayList(currentPlayIndex)
+            clearVideoDom(currentPlayIndex) 
+            if(data.type === 1) {
+                let url = _cf.flv_url + 'stream2.flv?playID=' + data.playID;
+                baseValue.url = url
+                baseValue.type = data.type
+                createVideoDom(1)
+                let videoId = 'video' + currentPlayIndex
+                videoElement = document.getElementById(videoId);
+                videoElement.controls = false;
+                createFlvPlayer(url,videoElement,baseValue)
+            }
+            if(data.type === 2) {
+                let url = _cf.websocket_url + 'stream2.yuv?playID=' + data.playID;
+                baseValue.url = url
+                baseValue.type = data.type
+                createVideoDom(2)
+                let videoId = 'video' + currentPlayIndex
+                videoElement = document.getElementById(videoId);
+                if ("WebSocket" in window) {
+                    createWebSocket(url,videoElement,baseValue)
+                } else {
+                    console.log("not support web socket.");
+                }
+            }   
+        }else {
+            console.log('选择播放类型参数错误');
+        }
+    }
+
+    // 新建flvPlayer
+    function createFlvPlayer(url,videoElement,baseValue) {
+        currentPlayIndex = baseValue.currentIndex
+        let flvPlayer = flvjs.createPlayer({
+            type: 'flv',
+            url: url,
+            isLive: true,
+            hasAudio: false
+        }, {
+            enableWorker: false,
+            autoCleanupSourceBuffer: true, //清理缓冲区
+            enableStashBuffer: false,
+            stashInitialSize: 128, // 减少首桢显示等待时长
+            statisticsInfoReportInterval: 600
+        });
+        flvPlayer.attachMediaElement(videoElement);
+        flvPlayer.load();
+        setTimeout(() =>{
+            flvPlayer.play();
+        }, 100);
+
+        // 对象监听
+        flvPlayer.on("scriptdata_arrived",  (e)=> {
+            console.log("视频正在播放");
+            playList.push({ key: currentPlayIndex, playValue: { flvPlayer },  baseValue})
+            let span = '.span' + currentPlayIndex
+            $(span)[0].innerText = 'H264,Flv'
+        });
+        flvPlayer.on("error",  (e)=> {
+            //出现错误，重新播放
+            console.log("出现错误，重新播放");
+            setTimeout(() => {
+                createFlvPlayer(url,videoElement,baseValue)
+            }, 100)
+        });
+    }
+    // 新建ws
+    function createWebSocket(url,videoElement,baseValue) {
+        currentPlayIndex = baseValue.currentIndex
+        let videoPlayer = new WebGLDisplayer(videoElement);
+        let reader = new FileReader();
+        let buf = null
+        let version = null
+        let width = null
+        let nwidth = null
+        let height  = null
+        let nheight = null
+        let length = null
+        let data = null
+        reader.onload = function() {
+            buf = new Uint8Array(this.result);
+            version = buf.slice(0, 4);
+            width = buf.slice(4, 6);
+            nwidth = width[1] << 8;
+            nwidth += width[0];
+            height = buf.slice(6, 8);
+            nheight = height[1] << 8;
+            nheight += height[0];
+            length = buf.slice(8, 12);
+            data = buf.slice(12);
+            videoPlayer.renderImg(nwidth,nheight,data);
+        }
+        let ws = new WebSocket(url);
+        ws.onopen = function () {
+            // 播放成功，加入数组
+            playList.push({ key: currentPlayIndex, playValue: { videoPlayer,reader,ws },  baseValue})
+            let span = '.span' + currentPlayIndex
+            $(span)[0].innerText = 'H265,Yuv'
+        }
+        ws.onmessage = function (data) {
+            reader.readAsArrayBuffer(data.data);
+        };
+        ws.onclose = function () {
+            console.log("onclose.");
+        }
+        ws.onerror = function () {
+            console.log("onerror.");
+        }
+    }
+
+
+    // 暂停播放，删除播放记录
+    function deletePlayList(domIndex) {
+        playList.forEach((item,index)=>{
+            if(item.key != domIndex) return
+            if(item.baseValue.type === 1 && flvjs.isSupported()){
+                let flvPlayer = item.playValue.flvPlayer
+                flvPlayer.unload();
+                flvPlayer.detachMediaElement();
+                flvPlayer.destroy();
+                item.playValue = null;
+                playList.splice(index, 1);
+            }else if(item.baseValue.type === 2) {
+                item.playValue.ws.close()
+                item.playValue.ws = null
+                item.playValue.reader = null
+                item.playValue.videoPlayer = null
+                item.playValue = null
+                playList.splice(index, 1);
+            }else{
+                console.log('清空视频播放器出错了');
+            }
+        })
+    }
+    // 清空DOM
+    function clearVideoDom(domIndex) {        
+        let windowBox = '#windowbox' + domIndex
+        let videoId = 'video' + domIndex
+        let parent = $(windowBox);
+        parent && parent.empty()
+        // 清除字样
+        let span = '.span' + domIndex
+        $(span)[0].innerText = ''
+    }
+    // 创建video和canvas DOM
+    function createVideoDom(type) {
+        let windowBox = '#windowbox' + currentPlayIndex
+        let videoId = 'video' + currentPlayIndex
+        let parent = $(windowBox);
+        if(type === 1) {
+            let videoDom = document.createElement("video");
+            videoDom.id = videoId;
+            videoDom.width = '400';
+            videoDom.height = '300';
+            parent.append(videoDom);
+        }else if(type === 2) {
+            let videoDom = document.createElement("canvas");
+            videoDom.id = videoId;
+            videoDom.width = '400';
+            videoDom.height = '300';
+            parent.append(videoDom);
+        }
+    }
+    // 选择渲染的框框
+    function chooseFrame(playID) {
+        const index1 = playList.findIndex(item => item.baseValue.playID === playID) // 列表里面有没有当前视频
+        const index2 = playList.findIndex(item=>item.key === currentPlayIndex) // 当前框是否有视频
+        if(index1 != -1) {
+            // 列表有重复视频
+            currentPlayIndex = playList[index1].key
+            changestyle('windowbox'+currentPlayIndex)
+            return
+        }
+        // 当前框有视频,选择下一个
+        if(index2 != -1){
+            // 框有视频
+            if (currentPlayIndex < 4) {
+                currentPlayIndex += 1;
+                changestyle('windowbox'+currentPlayIndex)
+            } else {
+                currentPlayIndex = 1;
+                changestyle('windowbox'+currentPlayIndex)
+            }  
+        }        
+    }
+    //单击视频框添加样式
+    function changestyle(windowId) {
+        let p = '#' + windowId;
+        $(p).siblings().css("border", "1px grey solid");
+        $(p).css("border", "1px rgb(97, 19, 239) solid");
+        let windowIndexMap ={'windowbox1':1,'windowbox2':2,'windowbox3':3,'windowbox4':4}
+        currentPlayIndex = windowIndexMap[windowId]
+    }
+    // 获取当前操作元素
+    function getPlayerItem() {
+        let playerItem = null
+        playList.forEach((item,index)=>{
+            if(item.key === currentPlayIndex) {
+                playerItem = item
+            }
+        })
+        if (playerItem){
+            return playerItem
+        }else{
+            window.alert('请选择需要操作的视频');
+            return false
+        }
+    }
+    // 暂时播放，删除播放记录
+    function deletePlayList(domIndex) {
+        playList.forEach((item,index)=>{
+            if(item.key === domIndex) {
+                if(item.baseValue.type === 1 && flvjs.isSupported()){
+                    let flvPlayer = item.playValue.flvPlayer
+                    flvPlayer.unload();
+                    flvPlayer.detachMediaElement();
+                    flvPlayer.destroy();
+                    item.playValue = null;
+                    playList.splice(index, 1);
+                }else if(item.baseValue.type === 2) {
+                    item.playValue.ws.close()
+                    item.playValue.ws = null
+                    item.playValue.reader = null
+                    item.playValue.videoPlayer = null
+                    item.playValue = null
+                    playList.splice(index, 1);
+                }else{
+                    console.log('清空视频播放器出错了');
+                }
+            }
+        })
+    }
+
+
+    // 播放操作
+    // 暂停播放
+    async function puaseVod() {
+        let playerItem = getPlayerItem()
+        if(!playerItem) return alert('暂停失败~')
+        if(playerItem.baseValue.type == 1) {
+            playerItem.playValue.flvPlayer.pause()
+        }
+        if(playerItem.baseValue.type == 2) {
+            playerItem.playValue.ws.close()
+        }
+        let params = {
+            PlayID: playerItem.baseValue.playID,
+            token
+        }
+        let data = await setPuaseVod(params)
+        console.log(data);
+    }
+    // 恢复播放
+    async function restoreVod() {
+        let playerItem = getPlayerItem()
+        if(!playerItem) return alert('恢复播放失败~')
+        if(playerItem.baseValue.type == 1) {
+            playerItem.playValue.flvPlayer.play()
+        }
+        if(playerItem.baseValue.type == 2) {
+            // playerItem.playValue.ws.close()
+            // 重新连接ws
+            // this.createWebSocket()
+        }
+        let params = {
+            PlayID: playerItem.baseValue.playID,
+            token
+        }
+        let data = await setRestoreVod(params)
+        console.log(data);
+    }    
+    // 停止播放
+    async function stopVod() {
+        let playerItem = getPlayerItem()
+        if(!playerItem) return alert('停止失败~')
+        let PlayID = playerItem.baseValue.playID
+        deletePlayList(currentPlayIndex)
+        clearVideoDom(currentPlayIndex)
+        let params = {
+            PlayID,
+            token
+        }
+        let data = await setStopPlay(params)
+        console.log(data);
+    }
+
+    async function setVodSpeed(speed) {
+        let playerItem = getPlayerItem()
+        if(!playerItem) return alert('设置速度失败~')
+        let params = {
+            PlayID: playerItem.baseValue.playID,
+            speed: speed || 1,
+            token
+        }
+        let data = await setSpeedVod(params)
+        console.log(data);
+    }
+
+    async function setVodOffset(Num) {
+        let playerItem = getPlayerItem()
+        if(!playerItem) return alert('跳播失败~')
+        console.log(playerItem);
+        let offset = parseInt((playerItem.baseValue.End - playerItem.baseValue.Begin)*Num + playerItem.baseValue.Begin)
+        let params = {
+            PlayID: playerItem.baseValue.playID,
+            offset,
+            token
+        }
+        let data = await setOffsetVod(params)
+        console.log(data);
+    }
+
+
+
+    // 下载视频
+    async function download() {
+        console.log(selectResultList);
+         let typeMap = {
+            '0':'.mp4',
+            '1':'.jpg',
+            '2':'.WAV'
+        }
+        if(local==='0') {    // 云存储
+            for(const item of selectResultList) {
+                let index = item.Name.indexOf('.')
+                let videoName = item.Name.substring(0,index) + typeMap[type]
+                let params = {
+                    id: item.ID,
+                    path: item.Path + item.Name,
+                    localPath:'D:\\download\\' +  videoName,
+                    beginUTC:item.Begin,
+                    endUTC:item.End,
+                    size:item.Size,
+                    token
+                }
+                console.log(params);
+                let res = await downloadCloudFile(params)
+                if(res && res.downloadID){
+                    let data = {
+                        key: currentDownloadIndex,
+                        path: params.path,
+                        downloadID:res.downloadID,
+                        name:item.Name,
+                        videoName:videoName
+                    }
+                    // 添加节点
+                    downLoadList.push(data)
+                    addDownloadDom(data)
+                }
+            }
+        }else if(local === '1'){    // 前端文件
+            for(const item of selectResultList) {
+                let index = item.Name.indexOf('.')
+                let videoName = item.Name.substring(0,index) + typeMap[type]
+                let params = {
+                    puid: item.puid,
+                    path: item.Path + item.Name,
+                    localPath:'D:\\download\\' +  videoName,
+                    beginUTC:item.Begin,
+                    endUTC:item.End,
+                    size:item.Size,
+                    token
+                }
+                console.log(params);
+                let res = await downloadDeviceFile(params)
+                if(res && res.downloadID){
+                    let data = {
+                        key: currentDownloadIndex,
+                        path: params.path,
+                        downloadID:res.downloadID,
+                        name:item.Name,
+                        videoName:videoName,
+                        pauseStatus: false,
+                        finishStatus: false
+                    }
+                    // 添加节点
+                    downLoadList.push(data)
+                    addDownloadDom(data)
+                }
+            }
+        }
+        console.log(downLoadList);
+    }
+    // 渲染下载页面
+    function addDownloadDom(data) {
+        let downloadDom = $(`#download${currentDownloadIndex}`)[0]
+        downloadDom.innerHTML =  `
+            <span>${data.name}</span>
+            <div>连接中~</div>
+            <div>下载进度:0%</div>`
+        currentDownloadIndex += 1
+        if(currentDownloadIndex>4) {
+            currentDownloadIndex = 1
+        }
+        let windowId = 'download' + currentDownloadIndex
+        changestyle1(windowId)
+    }
+
+    //单击视频框添加样式
+    function changestyle1(windowId) {
+        let p = '#' + windowId;
+        $(p).siblings().css("border", "1px grey solid");
+        $(p).css("border", "1px rgb(97, 19, 239) solid");
+        let windowIndexMap ={'download1':1,'download2':2,'download3':3,'download4':4}
+        currentDownloadIndex = windowIndexMap[windowId]
+    }
+    // 暂停下载
+    function pauseDownload() {
+        console.log('暂停');
+        console.log(downLoadList);
+        console.log(currentDownloadIndex);
+        let currentDownload = downLoadList.find(item=>item.key === currentDownloadIndex && !item.finishStatus && !item.pauseStatus)
+        if(currentDownload) {
+            let params = {
+                downloadID:currentDownload.downloadID,
+                token
+            }
+            setPuaseDownload(params).then(res=>{
+                currentDownload.pauseStatus = true
+                console.log(res)
+            })
+        }else {
+            console.log('无法暂停~');
+        }
+    }
+    function restoreDownload() {
+        console.log('恢复');
+
+        let currentDownload = downLoadList.find(item=>item.key === currentDownloadIndex && !item.finishStatus && item.pauseStatus)
+        if(currentDownload) {
+            let params = {
+                downloadID:currentDownload.downloadID,
+                token
+            }
+            setRestoreDownload(params).then(res=>{
+                console.log(res)
+                currentDownload.pauseStatus = false
+            })
+        }else {
+            console.log('无法恢复~');
+        }
+    }
+    function stopDownload() {
+        console.log('停止');
+        let index = downLoadList.findIndex(item=>item.key === currentDownloadIndex)
+        if(index != -1){
+            let params = {
+                downloadID:downLoadList[index].downloadID,
+                token
+            }
+            setStopDownload(params).then(res=>{
+                console.log(res)   
+                let downloadDom = $(`#download${downLoadList[index].key}`)[0]
+                downloadDom.innerHTML = ''
+                downLoadList.splice(index,1)
+            })
+        }else {
+            console.log('找不到~');
+        }
+    }
+
+</script>

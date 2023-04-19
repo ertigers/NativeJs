@@ -1,0 +1,9 @@
+#app1 .output,.actions {
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+#app1 .actions>button{
+  padding: 2px 6px;
+  margin-right: 6px;
+}

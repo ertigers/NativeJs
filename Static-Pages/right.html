@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>information-left</title>
+  <link href="common.css" rel="stylesheet">
+  <script src="baseData.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.1.2/echarts.common.min.js"></script>
+</head>
+<body>
+  <div id="main" class="content-wrapper">
+    <div class="content-item temperature-info-wrapper">
+      <div class="title">测温信息</div>
+      <div class="number-wrapper">
+        <div>测温人数: {{ baseData.temperature.testNumber }}</div>
+        <div>体温异常: {{ baseData.temperature.normalNumber }}</div>      
+      </div>
+      <div class="statistics-img-wrapper">
+        <div>体温异常统计社区分布图</div>
+        <div class="chart-wrapper">
+          <div id="echart1"></div>
+        </div>
+       </div>
+      <div class="top-img-wrapper">
+        <div>体温异常前10卡口分布图</div>
+        <div class="chart-wrapper-round">
+          <div id="echart2"></div>
+        </div>
+       </div>
+    </div>
+    <div class="content-item healthy-wrapper">
+      <div class="title">健康码信息</div>
+      <div class="number-wrapper">
+        <div>红码: {{ baseData.healthy.redNumber }}</div>
+        <div>黄码: {{ baseData.healthy.yellowNumber }}</div>
+        <div>绿码: {{ baseData.healthy.blueNumber }}</div>
+      </div>
+      <div class="statistics-img-wrapper">
+        <div>体温异常统计社区分布图</div>
+        <div class="chart-wrapper">
+          <div id="echart3"></div>
+        </div>
+       </div>
+      <div class="top-img-wrapper">
+        <div>未佩戴口罩前10卡口分布图</div>
+        <div class="chart-wrapper-round">
+          <div id="echart4"></div>
+        </div>
+       </div>
+    </div>
+    <div class="content-item risk-wrapper">
+      <div class="title">风险行程人员</div>
+      <div class="number-wrapper">
+        <div>敏感风险地区人员: {{ baseData.risk.riskNumber }}</div>
+      </div>
+      <div class="statistics-img-wrapper">
+        <div>敏感风险地区人员统计社区分布图</div>
+        <div class="chart-wrapper">
+          <div id="echart5"></div>
+        </div>
+      </div>
+      <div class="top-img-wrapper">
+        <div>风险行程前10分布图</div>
+        <div class="chart-wrapper-round">
+          <div id="echart6"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+setTimeout(() => {
+  drawChart1()
+  drawChart2()
+  drawChart3()
+  drawChart4()
+  drawChart5()
+  drawChart6()
+}, 500);
+
+$(document).ready(function () {
+  var v = new Vue({
+    el: '#main',
+    data: {
+      baseData: baseData
+    }
+  })
+});
+
+
+function drawChart1() {
+  let echart = document.getElementById('echart1');
+  let myChart = echarts.init(echart);
+  let option = {
+    dataZoom: [
+      {
+        type: 'inside',// 内置于坐标系中
+        start: 0,
+        end: 30,
+        xAxisIndex: [0]
+      }
+    ],
+    xAxis: {
+      type: 'category',
+      data: [...baseData.temperature.chart1.type]
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [
+      {
+        data: [...baseData.temperature.chart1.data],
+        type: 'bar'
+      }
+    ]
+  };
+  option && myChart.setOption(option);    
+}
+function drawChart2() {
+  let echart = document.getElementById('echart2');
+  let myChart = echarts.init(echart);
+  let option = {
+    tooltip: {
+      trigger: 'item'
+    },
+    series: [
+      {
+        name: 'Access From',
+        type: 'pie',
+        radius: '50%',
+        data: [...baseData.temperature.chart2.data],
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }
+    ]
+  };
+  option && myChart.setOption(option);    
+}
+
+function drawChart3() {
+  let echart = document.getElementById('echart3');
+  let myChart = echarts.init(echart);
+  let option = {
+    dataZoom: [
+      {
+        type: 'inside',// 内置于坐标系中
+        start: 0,
+        end: 30,
+        xAxisIndex: [0]
+      }
+    ],
+    xAxis: {
+      type: 'category',
+      data: [...baseData.healthy.chart1.type]
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [
+      {
+        data: [...baseData.healthy.chart1.data],
+        type: 'bar'
+      }
+    ]
+  };
+  option && myChart.setOption(option);    
+}
+function drawChart4() {
+  let echart = document.getElementById('echart4');
+  let myChart = echarts.init(echart);
+  let option = {
+    tooltip: {
+      trigger: 'item'
+    },
+    series: [
+      {
+        name: 'Access From',
+        type: 'pie',
+        radius: '50%',
+        data: [...baseData.healthy.chart2.data],
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }
+    ]
+  };
+  option && myChart.setOption(option);    
+}
+
+function drawChart5() {
+  let echart = document.getElementById('echart5');
+  let myChart = echarts.init(echart);
+  let option = {
+    dataZoom: [
+      {
+        type: 'inside',// 内置于坐标系中
+        start: 0,
+        end: 30,
+        xAxisIndex: [0]
+      }
+    ],
+    xAxis: {
+      type: 'category',
+      data: [...baseData.risk.chart1.type]
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [
+      {
+        data: [...baseData.risk.chart1.data],
+        type: 'bar'
+      }
+    ]
+  };
+  option && myChart.setOption(option);    
+}
+function drawChart6() {
+  let echart = document.getElementById('echart6');
+  let myChart = echarts.init(echart);
+  let option = {
+    tooltip: {
+      trigger: 'item'
+    },
+    series: [
+      {
+        name: 'Access From',
+        type: 'pie',
+        radius: '50%',
+        data: [...baseData.risk.chart2.data],
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }
+    ]
+  };
+  option && myChart.setOption(option);    
+}
+
+</script>
+</html>

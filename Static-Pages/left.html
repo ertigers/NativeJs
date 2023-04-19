@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>information-left</title>
+  <link href="common.css" rel="stylesheet">
+  <script src="baseData.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.1.2/echarts.common.min.js"></script>
+</head>
+<body>
+  <div id="main" class="content-wrapper content-wrapper-left">
+    <div class="content-item router-info-wrapper">
+      <div class="title">卡口信息</div>
+      <div class="number-wrapper">
+        <div>社区数量: {{ baseData.router.communityNumber }}</div>
+        <div>小区数量: {{ baseData.router.campusNumber }}</div>
+        <div>卡口数量: {{ baseData.router.bayonetNumber }}</div>
+        <div>保安数量: {{ baseData.router.protectionNumber }}</div>        
+      </div>
+    </div>
+    <div class="content-item mask-wrapper">
+      <div class="title">佩戴口罩监控</div>
+      <div class="number-wrapper">
+        <div>通过人数: {{ baseData.mask.passPeople }}</div>
+        <div>未戴口罩: {{ baseData.mask.noMask }}</div>
+      </div>
+      <div class="statistics-img-wrapper">
+        <div>未佩戴口罩统计社区分布图</div>
+        <div class="chart-wrapper">
+          <div id="echart1"></div>
+        </div>
+      </div>
+      <div class="top-img-wrapper">
+        <div>未佩戴口罩前10分布图</div>
+        <div class="chart-wrapper-round">
+          <div id="echart2"></div>
+        </div>
+      </div>
+    </div>
+    <div class="content-item vaccine-wrapper">
+      <div class="title">卡口疫苗接种人员</div>
+      <div class="number-wrapper">
+        <div>已完成接种: {{ baseData.vaccine.finish }}</div>
+        <div>未完成接种: {{ baseData.vaccine.noFinish }}</div>
+      </div>
+      <div class="statistics-img-wrapper">
+        <div>未完成接种人员统计社区分布图</div>
+        <div class="chart-wrapper">
+          <div id="echart3"></div>
+        </div>      
+      </div>
+      <div class="top-img-wrapper">
+        <div>未完成接种人员前10分布图</div>
+        <div class="chart-wrapper-round">
+          <div id="echart4"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+setTimeout(() => {
+  drawChart1()
+  drawChart2()
+  drawChart3()
+  drawChart4()
+}, 500);
+
+$(document).ready(function () {
+  var v = new Vue({
+    el: '#main',
+    data: {
+      baseData: baseData
+    }
+  })
+});
+
+function drawChart1() {
+  let echart = document.getElementById('echart1');
+  let myChart = echarts.init(echart);
+  let option = {
+    dataZoom: [
+      {
+        type: 'inside',// 内置于坐标系中
+        start: 0,
+        end: 30,
+        xAxisIndex: [0]
+      }
+    ],
+    xAxis: {
+      type: 'category',
+      data: [...baseData.mask.chart1.type]
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [
+      {
+        data: [...baseData.mask.chart1.data],
+        type: 'bar'
+      }
+    ]
+  };
+  option && myChart.setOption(option);    
+}
+function drawChart2() {
+  let echart = document.getElementById('echart2');
+  let myChart = echarts.init(echart);
+
+  let option = {
+    tooltip: {
+      trigger: 'item'
+    },
+    series: [
+      {
+        name: 'Access From',
+        type: 'pie',
+        radius: '50%',
+        data: [...baseData.mask.chart2.data],
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }
+    ]
+  };
+  option && myChart.setOption(option);    
+}
+
+function drawChart3() {
+  let echart = document.getElementById('echart3');
+  let myChart = echarts.init(echart);
+  let option = {
+    dataZoom: [
+      {
+        type: 'inside',// 内置于坐标系中
+        start: 0,
+        end: 30,
+        xAxisIndex: [0]
+      }
+    ],
+    xAxis: {
+      type: 'category',
+      data: [...baseData.vaccine.chart1.type]
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [
+      {
+        data: [...baseData.vaccine.chart1.data],
+        type: 'bar'
+      }
+    ]
+  };
+  option && myChart.setOption(option);    
+}
+function drawChart4() {
+  let echart = document.getElementById('echart4');
+  let myChart = echarts.init(echart);
+  let option = {
+    tooltip: {
+      trigger: 'item'
+    },
+    series: [
+      {
+        name: 'Access From',
+        type: 'pie',
+        radius: '50%',
+        data: [...baseData.mask.chart2.data],
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }
+    ]
+  };
+  option && myChart.setOption(option);    
+}
+
+</script>
+</html>

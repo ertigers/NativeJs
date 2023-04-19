@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <title>吕宜虎-前端开发简历</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #eee;
+      margin: 20px 0;
+    }
+
+    article {
+      width: 21cm;
+      min-height: 29.7cm;
+      background: white;
+      margin: 0 auto;
+      overflow: auto;
+      padding: 1em;
+    }
+  </style>
+  <style media="print">
+    body {
+      margin: 0;
+    }
+
+    .page2 {
+      page-break-before: always;
+      margin-top: 30px;
+    }
+  </style>
+  <style>
+    body {}
+
+    p {
+      margin: .3em 0;
+    }
+
+    h1 {
+      font-size: 25px;
+      margin-top: 0;
+    }
+
+    h4,
+    h5,
+    h6 {
+      font-weight: normal;
+    }
+
+    ol,
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    strong {
+      font-weight: normal;
+      color: #f60;
+    }
+
+    a {
+      color: #999;
+      text-decoration: none;
+      border-bottom: 1px solid;
+    }
+
+    p,
+    li {
+      color: #666;
+    }
+
+    strong {
+      font-weight: normal;
+    }
+
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin: 0;
+    }
+
+    .bio {
+      position: relative;
+    }
+
+    .bio img {
+      position: absolute;
+      top: 0;
+      right: 0;
+      object-fit: contain;
+    }
+  </style>
+
+  <style>
+    .projects {}
+
+    .projects p {
+      color: #666;
+    }
+
+    .projects strong {
+      color: #f60;
+    }
+
+    .projects>ol {
+      margin-top: 0;
+      list-style-position: inside;
+      padding: 0;
+    }
+
+    .projects>ol>li {
+      margin-bottom: 24px;
+    }
+
+    .projects>ol>li>header {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .projects>ol>li h3 {
+      display: inline-block;
+    }
+  </style>
+  <style>
+    .skills {}
+
+    #skills {
+      width: 600px;
+      height: 270px;
+    }
+    @media print {
+      #skills{display:none;}
+    }
+
+
+    .skills>.wrapper {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .skills>.wrapper>:first-child {
+      margin-right: 24px;
+    }
+
+    .skills>.wrapper>#skills {}
+
+    .skills>.wrapper>ul {
+      color: #666;
+    }
+
+    .skills>.wrapper strong {
+      color: #f60;
+    }
+
+    .skills>.wrapper>ul>li {
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+  </style>
+  <style>
+    .openSource {}
+
+    .openSource>h2 {}
+
+    .openSource header img {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    .openSource>ul {}
+
+    .openSource>ul>li {
+      margin-bottom: 24px;
+    }
+
+    .openSource header {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .openSource h3 {}
+  </style>
+  <style>
+    .jobs {}
+
+    .jobs>h2 {}
+
+    .jobs>ol {}
+
+    .jobs>ol>li {
+      margin: 12px 0;
+    }
+
+    .jobs header {
+      display: flex;
+      color: #666;
+      margin-bottom: 12px;
+    }
+
+    .jobs header>h3 {
+      font-size: 18px;
+      color: #333;
+    }
+
+    .jobs header>h4 {
+      margin-left: 1em;
+      font-size: 18px;
+    }
+
+    .jobs header>span {
+      font-size: 18px;
+      margin-left: auto;
+    }
+  </style>
+
+
+
+  <style>
+    @media (max-width: 500px) {
+      body {
+        margin: 0;
+      }
+
+      article {
+        width: auto;
+        height: auto;
+      }
+
+      .bio img {
+        display: none;
+      }
+
+      .skills .wrapper {
+        flex-direction: column;
+      }
+
+      #skills {
+        width: auto;
+      }
+      .jobs header{
+        flex-direction: column;
+      }
+      .jobs header >h3,
+      .jobs header >h4,
+      .jobs header >span {
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <article>
+    <section class="bio">
+      <h1>吕宜虎</h1>
+      <img src="./images/lvyihu.jpg" alt="" width="100" height="120">
+      <p>
+        男 | 23岁 | 前端开发工程师 | 合肥
+      </p>
+      <p>
+        手机：18758887220 | 微信：18758887220 | 邮箱：1720427782@qq.com
+      </p>
+    </section>
+    <section class="projects">
+      <h2>项目经历</h2>
+      <ol>
+        <li>
+          <header>
+            <h3>NaNa-UI库</h3>
+            <span>
+              <a target="_blank" href="https://github.com/ertigers/NaNa-UI-vue3">源码链接</a>
+              <a target="_blank" href="https://ertigers.github.io/nana-ui-website/index.html">项目预览</a>
+            </span>
+          </header>
+          <p>
+            这是一款基于 <strong>Vue 3</strong> / <strong>TypeScript</strong> 的 UI 库。涵盖了 Button、Switch 、Dialog、Tabs... 等常见 UI 组件。
+          </p>
+
+          <p>
+            深入研究 Vue 3，使用了 setup、onMounted、watchEffect、ref、computed 等 Compositioin API
+            模块化的源代码简洁明了，易于阅读。
+          </p>
+          <p>
+            我还推出了<strong>官方文档</strong>，可在线查看示例代码，并支持 PC 和手机浏览，我的个人项目都有使用NaNa-UI库。
+          </p>
+        </li>
+        <li>
+          <header>
+            <h3>口袋考研</h3>
+            <span>
+              <a  target="_blank" href="https://www.koudaikaoyan.com">项目预览</a>
+            </span>
+          </header>
+          <p>
+            这是一个基于 <strong>Vue 2全家桶</strong> 的单页面应用。包括PC和移动端的自动切换。
+          </p>
+          <p>
+            我主要负责资料商城、口袋导航等模块，主要功能包括购买考研资料，视频课程，专业选择等。
+          </p>
+          <!-- <p>
+            我还负责<strong>微信小程序</strong>，PC端，移动端网站的维护。
+          </p> -->
+        </li>
+        <!-- <li>
+          <header>
+            <h3>虎虎记账</h3>
+            <span>
+              <a target="_blank" href="https://github.com/ertigers/HuHuLog-react">源码链接</a>
+              <a target="_blank" href="https://ertigers.github.io/HuHuLog-react-website/index.html">项目预览</a>
+            </span>
+          </header>
+          <p>
+            一个基于 <strong>React</strong> / <strong>TypeScript</strong> 的移动端单页面应用。
+          </p>
+          <p>
+            这是我从自己的需求出发，设计出的极简记账应用，特点是快速记账。自己和朋友都在使用，并且不断优化更新。
+          </p>
+          <p>
+            该项目大量使用 <strong>React Hooks</strong>，让我对 Hooks 有了深刻的理解和应用。
+          </p>
+        </li> -->
+      </ol>
+    </section>
+
+
+    <section class="skills">
+      <h2>技能</h2>
+      <div class="wrapper">
+        <div id="skills"></div>
+        <ul>
+          <li>熟悉页面制作技巧，能将设计稿<strong>完美还原</strong> </li>
+          <li>熟悉<strong>前后端分离</strong>技术，包括 AJAX、跨域、前端路由、Cookie、Session 等</li>
+          <li>熟练掌握 <strong>Vue全家桶</strong>的使用，包括 VueCli、VueRouter、Vuex 等</li>
+          <!-- <li>熟练掌握 React全家桶的使用，包括 create-react-app、ReactRouter、Redux 等</li> -->
+          <li>熟悉 ES6，包括 let / Promise / await / 析构赋值，了解 <strong>TypeScript</strong> 的使用，我的项目就是 TS 实现的</li>
+          <!-- <li>了解 <strong>Webpack 的配置和优化</strong></li> -->
+        </ul>
+      </div>
+    </section>
+    <section class="openSource">
+      <h2>开源项目</h2>
+      <ul>
+        <li>
+          <header>
+            <h3>会动的皮卡丘</h3>
+            <span>
+              <a target="_blank" href="https://github.com/ertigers/pikachu">源码链接</a>
+              <a target="_blank" href="https://ertigers.github.io/pikachu/dist/index.html">项目预览</a>
+            </span>
+          </header>
+          <p>这是我在学习 <strong>CSS3和动画</strong> 时制作的一个可爱作品</p>
+        </li>
+        <!-- <li>
+          <header>
+            <h3>自制导航首页</h3>
+            <span>
+              <a target="_blank" href="https://github.com/ertigers/nav-jQuery">源码链接</a>
+              <a target="_blank" href="https://ertigers.github.io/nav-jQuery/dist/index.html">项目预览</a>
+            </span>
+          </header>
+          <p>我在学习 <strong>jQuery</strong> 时做的一个小作品</p>
+        </li> -->
+        <li>
+          <header>
+            <h3>简易画板</h3>
+            <span>
+              <a target="_blank" href="https://github.com/ertigers/demos-2/tree/main/canvas">源码链接</a>
+              <a target="_blank" href="https://ertigers.github.io/demos-2/canvas/">项目预览</a>
+            </span>
+          </header>
+          <p>我在学习 <strong>Canvas</strong> 时做的一个小作品</p>
+        </li>
+      </ul>
+    </section>
+    <section class="jobs">
+      <h2>工作经历</h2>
+      <ol>
+        <li>
+          <header>
+            <h3> 杭州知习好悟科技有限责任公司 </h3>
+            <h4>前端开发工程师</h4>
+            <span><time>2020年6月</time>~<time>2021年3月</time></span>
+          </header>
+          <ul>
+            <li>
+              独立负责蜀黍之家后台管理系统的开发
+            </li>
+            <li> 
+              主要负责资料商城、口袋导航等模块，主要功能包括购买资料，视频课程，专业选择，答题等。
+            </li>
+            <!-- <li>
+              作为前端骨干，积极与团队成员沟通，提高其前端开发工作效率
+            </li> -->
+          </ul>
+        </li>
+      </ol>
+    </section>
+    <section class="others">
+      <h2>其他链接</h2>
+      <ul>
+        <!-- <li><a href="https://juejin.cn/user/3658778052140568">我的博客</a>，目前已有 10 篇技术文章</li> -->
+        <li><a href="https://github.com/ertigers">我的 GitHub</a>，过去三个月有 200 次提交</li>
+      </ul>
+    </section>
+    <section class="education">
+      <h2>教育经历</h2>
+      <p>
+        <span><time>2016年</time>~<time>2020年</time></span>
+        | 杭州师范大学 | 信息与计算科学 | 本科
+      </p>
+      <p>
+        专业成绩排名前30% | 担任班长 | 英语四级 | 院排球队员
+      </p>
+    </section>
+  </article>
+  <script src="https://cdn.bootcss.com/echarts/4.6.0/echarts.min.js"></script>
+  <script src="./main.js"></script>
+</body>
+</html>

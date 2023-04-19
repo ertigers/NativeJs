@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>css3动画</title>
+  <style>
+    * {padding: 0;margin: 0;box-sizing: border-box;}
+    ul,ol {
+      list-style: none;
+    }
+    .heart {
+      position: relative;
+      display: inline-block;
+      margin: 200px;
+      animation: heart 0.8s infinite alternate;
+    }
+    @keyframes heart {
+      0% {
+        transform: scale(1.0);
+      }
+      100% {
+        transform: scale(1.5);
+      }
+    }
+
+    .heart > .left {
+      position: absolute;
+      bottom: 100%;
+      right: 100%;
+      width: 100px;
+      height: 100px;
+      background-color: red;
+      transform: rotate(45deg) translateX(60px);
+      border-radius: 50% 0 0 50%;
+    }
+    .heart > .right {
+      position: absolute;
+      bottom: 100%;
+      left: 100%;
+      width: 100px;
+      height: 100px;
+      background-color: red;
+      transform: rotate(45deg) translateY(60px);
+      border-radius: 50% 50% 0 0;
+    }
+    .heart > .bottom {
+      width: 100px;
+      height: 100px;
+      background-color: red;
+      transform: rotate(45deg);
+    }
+  </style>
+</head>
+<body>
+  <div class="heart">
+    <div class="left"></div>
+    <div class="right"></div>
+    <div class="bottom"></div>
+  </div>
+</body>
+</html>
