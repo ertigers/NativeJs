@@ -15,3 +15,11 @@ const debounce = (fn,delay)=>{
 const debounced = debounce(()=>console.log('hi'),2000)
 debounced()
 debounced()
+
+// 在vue项目中使用:
+debouncedClick: debounce(
+  function() {
+    console.log('在这里处理相关的业务逻辑')
+  },
+  200
+)
