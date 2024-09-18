@@ -120,6 +120,10 @@
       margin-bottom: 24px;
     }
 
+    .projects>ol>li>p {
+      margin-top: 12px;
+    }
+
     .projects>ol>li>header {
       display: flex;
       justify-content: space-between;
@@ -220,6 +224,10 @@
       margin-left: 1em;
       font-size: 18px;
     }
+    .jobs h4 {
+      margin-left: 1em;
+      font-size: 18px;
+    }
 
     .jobs header>span {
       font-size: 18px;
@@ -228,6 +236,13 @@
   </style>
 
 
+  <style>
+    .js-title {
+      font-weight: 600;
+      font-size: 15px;
+      color: #333;
+    }
+  </style>
 
   <style>
     @media (max-width: 500px) {
@@ -328,23 +343,45 @@
         </li>
       </ol>
     </section>
+    <section class="skills">
+      <h2>技能</h2>
+      <div class="wrapper">
+        <div id="skills"></div>
+        <ul>
+          <li>1.熟悉页面制作技巧，能将设计稿<strong>完美还原</strong>, 熟练使用flex, grid布局等</li>
+          <li>2.熟悉<strong>前后端分离</strong>技术，包括 AJAX、跨域、前端路由、Cookie、Session 等</li>
+          <li>3.熟练掌握 <strong>Vue全家桶</strong>的使用，包括 VueCli、VueRouter、Vuex 等</li>
+          <li>4.熟悉 ES6，包括 let / Promise / await / 析构赋值，了解 <strong>TypeScript</strong> 的使用</li>
+          <li>5.可以 <strong>独立负责</strong> 前端项目的完整生命周期, 包括前端框架搭建, 模块划分, 性能优化, 迭代升级</li>
+        </ul>
+      </div>
+    </section>
     <section class="projects">
       <h2>项目简介</h2>
-      <!-- 体现有能负责 -->
+      <!-- 体现有原生js开发能力和封装的 -->
       <ol>
         <li>
           <header>
             <h3>本地化插件SDK</h3>
           </header>
           <p>
-            这是一个提供给第三方开发者快速接入ICVS平台，实现播放<strong>实时视频</strong>，云台操作，<strong>音频处理</strong>，对讲喊话等一系列操作的SDK。其中包含插件，SDK文档说明，demo示例，bug排查手册。
+            <span class="js-title">项目简介:</span> 
+            这是一个提供给第三方开发者快速接入ICVS平台，实现播放<strong>实时视频</strong>，云台操作，<strong>音频处理</strong>，对讲喊话等一系列操作的SDK。其中包含插件，SDK文档说明，demo示例，bug排查手册。这款SDK的核心js库，已上传至<strong>npm库</strong>，可通过npm安装使用，前后共更新维护<strong>20+</strong>个版本，使用<strong>Webpack</strong>打包混淆代码。
           </p>
           <p>
-            这款SDK的核心js库，已上传至<strong>npm库</strong>，可通过npm安装使用，前后共更新维护<strong>20+</strong>个版本，使用<strong>Webpack</strong>打包混淆代码。
+            <span class="js-title">技术栈:</span> 
+            JS, Webpack, Gulp, ES6的模块化
           </p>
-
-          <h4>技术栈:</h4>
-
+          <p>
+            <span class="js-title">主要任务:</span>
+            <ul>
+              <li>1.封装ajax, 定义get和post请求的方法, 处理接收xml格式的参数, 转成JSON格式</li>
+              <li>2.定义全局config文件, 暂存参数变量, 管理token, websocket链接</li>
+              <li>3.进行模块化开发, 有: 登录模块, 云操作, 设备操作, 云台操作, 预置位, 音频处理, 历史回放, 电子地图等</li>
+              <li>4.兼容接口返回状态码, 统一封装提示, 封装xml格式和JSON格式的透传命令</li>
+              <li>5.编写sdk文档, sdk使用demo, bug排查手册</li>
+            </ul>
+          </p>
         </li>
       </ol>
       <!-- 针对有app开发经验的 -->
@@ -354,8 +391,23 @@
             <h3>智慧体彩app-Uniapp</h3>
           </header>
           <p>
-            这是一个体彩中心的监管平台，有pc和app两端，app端可以调取店内实时视频和历史视频，收到告警事件通知，监管和整改不合规的和的现象和行为。
-            这款app是通过<strong>Uniapp</strong> 开发的，使用uni-ui和插件市场的其他组件，统一<strong>封装axios</strong>网络请求，常用js方法库。
+            <span class="js-title">项目简介:</span> 
+            这是一个体彩中心的监管平台，有pc和app两端，app端可以调取店内实时视频和历史视频，收到告警事件通知，监管人员可以视频监管和线下监管, 上传不符合规定的照片, 提示店主进行整改, 店主收到整改通知, 开始整改, 并上传整改后的图片, 得到监管员通过, 即算完成闭环。
+            这款app是通过<strong>Uniapp</strong> 开发的，使用uni-ui和插件市场的其他组件.
+          </p>
+          <p>
+            <span class="js-title">技术栈:</span> 
+            Uniapp, 对接安卓sdk, axios, Vue2, Vuex, VueRouter, flvjs
+          </p>
+          <p>
+            <span class="js-title">主要任务:</span>
+            <ul>
+              <li>1.搭建uniapp基础框架, 引入ui框架, 封装axios, 封装常用js方法</li>
+              <li>2.根据需求文档, 创建路由, 创建公共组件和布局组件</li>
+              <li>3.app端接入安卓sdk, 播放视频和历史视频回放, 云台操作, pc端使用flvjs播放实时视频流</li>
+              <li>4.完成监管人员和店主之间的监管和整改的流程, 调用手机拍照, 与服务端传输base64格式的图片</li>
+              <li>5.完成平台客流量分析和展示, 使用echarts进行饼状图,折线图等展示</li>
+            </ul>
           </p>
         </li>
       </ol>
@@ -366,24 +418,65 @@
             <h3>OA审批-低代码平台</h3>
           </header>
           <p>
+            <span class="js-title">项目简介:</span> 
             这是一公司考勤管理系统的一个系统模块，基于 <span><a href="http://wflow.willianfu.top/" target="_blank">wflow</a></span> 的基础版本，根据实际业务需求，定制开发基础组件和复杂的拓展组件，共计二十余款组件，<strong>适配h5和pc端</strong>，包括文件上传，<strong>定位打卡</strong>，<strong>对接禅道</strong>等定制组件和组件间联合配置。审批流程，提供审批人，办理人，抄送人，执行器，条件分支，并行分支等处理方式。
           </p>
+          <p>
+            <span class="js-title">技术栈:</span> 
+            Vue2全家桶，wflow基础版本重构升级, 
+          </p>
+          <p>
+            <span class="js-title">主要任务:</span>
+            <ul>
+              <li>1.封装ajax, 定义get和post请求的方法, 处理接收xml格式的参数, 转成JSON格式</li>
+            </ul>
+          </p>
+        </li>
+      </ol>
+      <ol>
+        <li>
+          <header>
+            <h3>公司考勤管理系统</h3>
+          </header>
+          <p>
+            <span class="js-title">项目简介:</span> 
+            这是一公司考勤管理系统的一个系统模块，基于 <span><a href="http://wflow.willianfu.top/" target="_blank">wflow</a></span> 的基础版本，根据实际业务需求，定制开发基础组件和复杂的拓展组件，共计二十余款组件，<strong>适配h5和pc端</strong>，包括文件上传，<strong>定位打卡</strong>，<strong>对接禅道</strong>等定制组件和组件间联合配置。审批流程，提供审批人，办理人，抄送人，执行器，条件分支，并行分支等处理方式。
+          </p>
+          <p>
+            <span class="js-title">技术栈:</span> 
+            JS, Webpack, Gulp, ES6的模块化
+          </p>
+          <p>
+            <span class="js-title">主要任务:</span>
+            <ul>
+              <li>1.封装ajax, 定义get和post请求的方法, 处理接收xml格式的参数, 转成JSON格式</li>
+            </ul>
+          </p>
+        </li>
+      </ol>
+      <ol>
+        <li>
+          <header>
+            <h3>AI算法训练平台</h3>
+          </header>
+          <p>
+            <span class="js-title">项目简介:</span> 
+            这是一公司考勤管理系统的一个系统模块，基于 <span><a href="http://wflow.willianfu.top/" target="_blank">wflow</a></span> 的基础版本，根据实际业务需求，定制开发基础组件和复杂的拓展组件，共计二十余款组件，<strong>适配h5和pc端</strong>，包括文件上传，<strong>定位打卡</strong>，<strong>对接禅道</strong>等定制组件和组件间联合配置。审批流程，提供审批人，办理人，抄送人，执行器，条件分支，并行分支等处理方式。
+          </p>
+          <p>
+            <span class="js-title">技术栈:</span> 
+            JS, Webpack, Gulp, ES6的模块化
+          </p>
+          <p>
+            <span class="js-title">主要任务:</span>
+            <ul>
+              <li>1.封装ajax, 定义get和post请求的方法, 处理接收xml格式的参数, 转成JSON格式</li>
+            </ul>
           </p>
         </li>
       </ol>
     </section>
-    <!-- <section class="skills">
-      <h2>技能</h2>
-      <div class="wrapper">
-        <div id="skills"></div>
-        <ul>
-          <li>熟悉页面制作技巧，能将设计稿<strong>完美还原</strong> </li>
-          <li>熟悉<strong>前后端分离</strong>技术，包括 AJAX、跨域、前端路由、Cookie、Session 等</li>
-          <li>熟练掌握 <strong>Vue全家桶</strong>的使用，包括 VueCli、VueRouter、Vuex 等</li>
-          <li>熟悉 ES6，包括 let / Promise / await / 析构赋值，了解 <strong>TypeScript</strong> 的使用，我的项目就是 TS 实现的</li>
-        </ul>
-      </div>
-    </section> -->
+
     <!-- <section class="openSource">
       <h2>开源项目</h2>
       <ul>
@@ -420,7 +513,8 @@
     </section>
 
   </article>
-  <script src="https://cdn.bootcss.com/echarts/4.6.0/echarts.min.js"></script>
+  <!-- <script src="https://cdn.bootcss.com/echarts/4.6.0/echarts.min.js"></script> -->
+  <script src="./js/echarts.min.js"></script>
   <script src="./main.js"></script>
 </body>
 </html>
