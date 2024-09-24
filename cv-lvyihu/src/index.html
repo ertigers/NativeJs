@@ -423,12 +423,16 @@
           </p>
           <p>
             <span class="js-title">技术栈:</span> 
-            Vue2全家桶，wflow基础版本重构升级, 
+            Vue2全家桶，wflow基础版本重构升级
           </p>
           <p>
             <span class="js-title">主要任务:</span>
             <ul>
-              <li>1.封装ajax, 定义get和post请求的方法, 处理接收xml格式的参数, 转成JSON格式</li>
+              <li>1.16种常用基础组件的研发(如输入框,上传图片,组织人员选择器,路径规划等),兼容h5端的显示,基础配置</li>
+              <li>2.两种定制化组件的研发:出差组件,项目立项,可打通考勤系统和禅道系统</li>
+              <li>3.支持多人审批办理同时填写一份办理单,处理会签/或签的配置</li>
+              <li>4.支持审批/办理/执行器/条件分支/并行分支等流程节点的处理方式</li>
+              <li>5.流程处理节点的进度展示和提交表单的展示,定制化组件的展示(如:多人多份,按照权限展示)</li>
             </ul>
           </p>
         </li>
@@ -436,45 +440,58 @@
       <ol>
         <li>
           <header>
-            <h3>公司考勤管理系统</h3>
+            <h3>公司考勤管理系统-mis清云</h3>
           </header>
           <p>
             <span class="js-title">项目简介:</span> 
-            这是一公司考勤管理系统的一个系统模块，基于 <span><a href="http://wflow.willianfu.top/" target="_blank">wflow</a></span> 的基础版本，根据实际业务需求，定制开发基础组件和复杂的拓展组件，共计二十余款组件，<strong>适配h5和pc端</strong>，包括文件上传，<strong>定位打卡</strong>，<strong>对接禅道</strong>等定制组件和组件间联合配置。审批流程，提供审批人，办理人，抄送人，执行器，条件分支，并行分支等处理方式。
+            mis清云是集公司考勤管理, CRM系统, 项目管理, 产品管理, OA办公, 题库系统, 绩效考核, 会议室预约, 维保系统, 客服工单等的一个公司内部管理系统。此系统包括App, H5, 微信小程序, PC端.  在此平台在职三年全权维护和开发新模块, 负责前端整个生命周期和部分服务端的研发。
           </p>
           <p>
             <span class="js-title">技术栈:</span> 
-            JS, Webpack, Gulp, ES6的模块化
+            Vue2全家桶，element-ui, vant-ui, echarts, 高德地图SDK, mqtt, 微信登录, Uniapp
           </p>
           <p>
             <span class="js-title">主要任务:</span>
             <ul>
-              <li>1.封装ajax, 定义get和post请求的方法, 处理接收xml格式的参数, 转成JSON格式</li>
+              <li>1.定义前端架构,三级菜单路由,系统人员的角色权限管理,系统参数配置,系统运行日志. 分配各模块进行开发</li>
+              <li>2.考勤管理模块: 以组织架构为中心,分配考勤班次,汇总月度,优化个人月度汇总的查询速度,提升90%</li>
+              <li>3.CRM系统: 分为客户管理,线索管理,商机管理,跟进记录,拜访客户记录,回款计划等, 以及线索的漏斗图</li>
+              <li>4.维保系统: 开单关联crm的客户,填报设备的sn号,入库查询,走维修流程,确定维修,签订合同,修完发货</li>
+              <li>5.客服工单: 由客服人员创建工单, 转交给可以处理问题的研发人员, 最终由负责人关闭工单,回复客户</li>
+              <li>6.项目管理模块: 有禅道内和平台内项目,都需要进行任务工时的统计,月尾需要项目经理对组内人员进行考评</li>
+              <li>7.绩效考核模块: 由项目分和考勤分两部分组成,由各部门经理打分评优,统计绩效,导出月报表,周报表</li>
             </ul>
           </p>
         </li>
       </ol>
-      <ol>
+      <!-- <ol>
         <li>
           <header>
             <h3>AI算法训练平台</h3>
           </header>
           <p>
             <span class="js-title">项目简介:</span> 
-            这是一公司考勤管理系统的一个系统模块，基于 <span><a href="http://wflow.willianfu.top/" target="_blank">wflow</a></span> 的基础版本，根据实际业务需求，定制开发基础组件和复杂的拓展组件，共计二十余款组件，<strong>适配h5和pc端</strong>，包括文件上传，<strong>定位打卡</strong>，<strong>对接禅道</strong>等定制组件和组件间联合配置。审批流程，提供审批人，办理人，抄送人，执行器，条件分支，并行分支等处理方式。
+            
           </p>
           <p>
             <span class="js-title">技术栈:</span> 
-            JS, Webpack, Gulp, ES6的模块化
+            
           </p>
           <p>
             <span class="js-title">主要任务:</span>
             <ul>
-              <li>1.封装ajax, 定义get和post请求的方法, 处理接收xml格式的参数, 转成JSON格式</li>
+              <li>1.</li>
+              <li>2.</li>
+              <li>3.</li>
+              <li>4.</li>
+              <li>5.</li>
+              <li>6.</li>
+              <li>7.</li>
+              <li>8.</li>
             </ul>
           </p>
         </li>
-      </ol>
+      </ol> -->
     </section>
 
     <!-- <section class="openSource">
