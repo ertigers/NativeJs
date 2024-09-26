@@ -235,6 +235,23 @@
     }
   </style>
 
+  <style>
+
+    .others .a-image {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .others .a-image img{
+      width: 80px;
+      height: 80px;
+      margin-top: 6px;
+    }
+  </style>
+
+
 
   <style>
     .js-title {
@@ -346,11 +363,11 @@
     <section class="skills">
       <h2>技能</h2>
       <div class="wrapper">
-        <div id="skills"></div>
+        <!-- <div id="skills"></div> -->
         <ul>
-          <li>1.熟悉页面制作技巧，能将设计稿<strong>完美还原</strong>, 熟练使用flex, grid布局等</li>
-          <li>2.熟悉<strong>前后端分离</strong>技术，包括 AJAX、跨域、前端路由、Cookie、Session 等</li>
-          <li>3.熟练掌握 <strong>Vue全家桶</strong>的使用，包括 VueCli、VueRouter、Vuex 等</li>
+          <li>1.熟悉页面制作技巧，能将设计稿<strong>完美还原</strong>, 熟练使用flex, grid布局, 进行模块化封装组件</li>
+          <li>2.熟悉<strong>前后端分离</strong>技术，包括 AJAX、跨域、前端路由、Cookie、Session、前后端数据交互</li>
+          <li>3.熟练掌握 <strong>Vue全家桶</strong>的使用，包括 VueCli、VueRouter、Vuex、Pinia、Element等ui框架</li>
           <li>4.熟悉 ES6，包括 let / Promise / await / 析构赋值，了解 <strong>TypeScript</strong> 的使用</li>
           <li>5.可以 <strong>独立负责</strong> 前端项目的完整生命周期, 包括前端框架搭建, 模块划分, 性能优化, 迭代升级</li>
         </ul>
@@ -392,7 +409,7 @@
           </header>
           <p>
             <span class="js-title">项目简介:</span> 
-            这是一个体彩中心的监管平台，有pc和app两端，app端可以调取店内实时视频和历史视频，收到告警事件通知，监管人员可以视频监管和线下监管, 上传不符合规定的照片, 提示店主进行整改, 店主收到整改通知, 开始整改, 并上传整改后的图片, 得到监管员通过, 即算完成闭环。
+            这是一个体彩中心的监管平台，有pc和app两端，app端可以调取店内<strong>实时视频</strong>和历史视频，收到告警事件通知，监管人员可以视频监管和线下监管, 上传不符合规定的照片, 提示店主进行整改, 店主收到整改通知, 开始整改, 并上传整改后的图片, 得到监管员通过, 即算完成闭环。
             这款app是通过<strong>Uniapp</strong> 开发的，使用uni-ui和插件市场的其他组件.
           </p>
           <p>
@@ -444,11 +461,11 @@
           </header>
           <p>
             <span class="js-title">项目简介:</span> 
-            mis清云是集公司考勤管理, CRM系统, 项目管理, 产品管理, OA办公, 题库系统, 绩效考核, 会议室预约, 维保系统, 客服工单等的一个公司内部管理系统。此系统包括App, H5, 微信小程序, PC端.  在此平台在职三年全权维护和开发新模块, 负责前端整个生命周期和部分服务端的研发。
+            mis清云是集公司考勤管理, CRM系统, 项目管理, 产品管理, OA办公, 题库系统, 绩效考核, 会议室预约, 维保系统, 客服工单等的一个<strong>公司内部管理系统</strong>。此系统包括App, H5, 微信小程序, PC端.  在职<strong>三年全权维护</strong>此平台和开发新模块, 负责前端整个生命周期和部分服务端的研发。
           </p>
           <p>
             <span class="js-title">技术栈:</span> 
-            Vue2全家桶，element-ui, vant-ui, echarts, 高德地图SDK, mqtt, 微信登录, Uniapp
+            Vue2全家桶，element-ui, vant-ui, echarts, 高德地图sdk, mqtt, 微信登录
           </p>
           <p>
             <span class="js-title">主要任务:</span>
@@ -523,9 +540,22 @@
     <section class="others">
       <h2>其他链接</h2>
       <ul style="display: flex;">
-        <li style="margin-right: 20px;"><a href="https://ertigers.github.io/Website/nana-ui/index.html" target="_blank">我的UI框架</a></li>
-        <li style="margin-right: 20px;"><a href="https://juejin.cn/user/3658778052140568/posts" target="_blank">我的博客</a></li>
-        <li style="margin-right: 20px;"><a href="https://github.com/ertigers" target="_blank">我的 GitHub</a></li>
+        <li style="margin-right: 20px;" class="a-image">
+          <a href="https://ertigers.github.io/Website/nana-ui/index.html" target="_blank">我的UI框架(墙)</a>
+          <img src="./images/ui.png" alt="" srcset="">
+        </li>
+        <li style="margin-right: 20px;" class="a-image">
+          <a href="https://juejin.cn/user/3658778052140568/posts" target="_blank">我的博客</a>
+          <img src="./images/blog.png" alt="" srcset="">
+        </li>
+        <li style="margin-right: 20px;" class="a-image">
+          <a href="https://github.com/ertigers" target="_blank">我的GitHub</a>
+          <img src="./images/github.png" alt="" srcset="">
+        </li>
+        <li style="margin-right: 20px;" class="a-image">
+          <a href="https://ertigers.github.io/NativeJs/cv-lvyihu/src/index.html" target="_blank">线上简历(墙)</a>
+          <img src="./images/cv.png" alt="" srcset="">
+        </li>
       </ul>
     </section>
 
