@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>qx_static_demo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <link rel="stylesheet" href="tools/element_ui.css">
+</head>
+
+<body>
+<div id="app">
+  <div>
+    {{number}}
+  </div>
+  <el-button type="primary" @click="add">点击+1</el-button>
+</div>
+<script type="text/javascript" src="tools/vue.js"></script>
+<script type="text/javascript" src="tools/element_ui.js"></script>
+
+<script>
+  new Vue({
+      el: '#app',
+      data() {
+          return {
+            number: 1
+          }
+      },
+      mounted() {
+        console.log('引入了vue');
+      },
+      methods: {
+        add() {
+          this.number++
+        }
+      }
+  })
+</script>
+<style>
+
+</style>
+</body>
+</html>

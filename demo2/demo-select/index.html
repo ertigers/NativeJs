@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>qx_static_demo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <link rel="stylesheet" href="tools/element_ui.css">
+</head>
+
+<body>
+<div id="app">
+  <div>
+    {{number}}
+  </div>
+  <el-button type="primary" @click="add">点击+1</el-button>
+
+  <div>
+    <el-checkbox-group :value="selected">
+      <el-checkbox v-for="(op, index) in options" :key="index" :label="op"> 
+        {{ typeof op === 'string' ? op : op.label }}
+      </el-checkbox>
+    </el-checkbox-group>
+  </div>
+</div>
+<script type="text/javascript" src="tools/vue.js"></script>
+<script type="text/javascript" src="tools/element_ui.js"></script>
+
+<script>
+  new Vue({
+      el: '#app',
+      data() {
+          return {
+            number: 1,
+
+            selected: [{ index: 1, label: '选项1' }],
+            options: [
+              { index: 1, label: '选项1' },
+              { index: 2, label: '选项2' },
+              { index: 3, label: '选项3' }
+            ]
+          }
+      },
+      mounted() {
+        console.log('引入了vue');
+      },
+      methods: {
+        add() {
+          this.number++
+        }
+      }
+  })
+</script>
+<style>
+
+</style>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>flex布局2</title>
+  <style>
+    * {padding: 0;margin: 0;box-sizing: border-box;}
+    ul,ol {
+      list-style: none;
+    }
+    .container {
+      display: grid;
+      justify-items: center;
+      grid-template-columns: repeat(auto-fit, 400px);
+      /* grid-auto-flow: row dense; */
+      gap: auto; /* 设置子容器之间的间距 */
+    }    
+    .container > .item {
+      width: 400px;
+      height: 300px;
+      border: 1px solid red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="item">内容</div>
+    <div class="item">内容</div>
+    <div class="item">内容</div>
+    <div class="item">内容</div>
+    <div class="item">内容</div>
+    <div class="item">内容</div>
+    <div class="item">内容</div>
+    <div class="item">内容</div>
+    <div class="item">内容</div>
+  </div>
+</body>
+</html>

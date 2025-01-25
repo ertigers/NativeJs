@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centered Div with Scroll</title>
+    <style>
+        .outer-div {
+            width: 1200px; /* 大 div 的固定宽度 */
+            height: 800px; /* 大 div 的固定高度 */
+            border: 1px solid #000; /* 为了清晰显示边界 */
+            display: flex; /* 使用 flex 布局 */
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+            overflow-x: auto; /* 当内容超出时显示滚动条 */
+            overflow-y: auto; /* 当内容超出时显示滚动条 */
+        }
+        .inner-div {
+            width: auto;
+            height: auto;
+            max-width: 1200px;
+            max-height: 800px;
+
+            background-color: #f0f0f0;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .inner-content {
+          border: 1px solid red;
+          height: 100px;
+          width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="outer-div">
+        <div class="inner-div">
+            <div class="inner-content"></div>
+        </div>
+    </div>
+
+    <button onclick="handleBig()">大</button>
+    <button onclick="handleSmall()">小</button>
+</body>
+<script>
+  function handleBig() {
+    let div = document.querySelector('.inner-content')
+
+    const width = Number(div.style.width.split('px')[0]) || 200
+    const height = Number(div.style.height.split('px')[0]) || 100
+
+    console.log(width, height);
+
+
+    let width2 = (width * 1.2).toFixed(0)
+    let height2 = (height * 1.2).toFixed(0)
+
+    div.style.width = width2 + 'px'
+    div.style.height = height2 + 'px'
+
+
+    let innerDiv = document.querySelector('.inner-div')
+
+    if(width2 > 1200 || height2 > 800) {
+      innerDiv.style.display = "block"
+    }
+    console.log(innerDiv.style);
+  }
+
+  function handleSmall() {
+    let div = document.querySelector('.inner-content')
+    const width = Number(div.style.width.split('px')[0]) || 200
+    const height = Number(div.style.height.split('px')[0]) || 100
+
+    let width2 = (width * 0.8).toFixed(0)
+    let height2 = (height * 0.8).toFixed(0)
+
+    div.style.width = width2 + 'px'
+    div.style.height = height2 + 'px'
+
+
+    let innerDiv = document.querySelector('.inner-div')
+
+    if(width2 > 1200 || height2 > 800) {
+      innerDiv.style.display = ""
+    }
+
+  }
+</script>
+</html>
